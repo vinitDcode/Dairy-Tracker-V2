@@ -1,0 +1,37 @@
+Act as a Principal Staff Engineer (L7) and DevSecOps Architect for my Supabase-backed React dairy dashboard. Your objective is a ruthless, workspace-wide debugging session focusing on global scrollability, cross-platform UI perfection, and a comprehensive security audit utilizing your autonomous agent skills.
+
+PHASE 1: THE SCROLLING & MOBILE KEYBOARD FIX (CRITICAL)
+
+Root Cause Analysis: The current scroll down function is broken. Analyze the root App.jsx, main layouts, and every single tab/sub-tab container.
+
+The Flexbox & Keyboard Fix: Stop using 100dvh globally with overflow: hidden, as it breaks when mobile virtual keyboards open. Use height: 100%; min-height: 100vh; on the body. The main app wrapper must be display: flex; flex-direction: column;. The scrollable content area MUST have flex: 1 1 0%; overflow-y: auto; overscroll-behavior-y: contain; padding-bottom: env(safe-area-inset-bottom); applied.
+
+Z-Index Stacking: Ensure fixed elements have explicit z-indexes (e.g., z-50) so they do not block touch/scroll events on the underlying containers.
+
+Global Traversal Verification: Systematically check every single tab and sub-tab component to ensure no child element is breaking out of the overflow container.
+
+PHASE 2: AUTONOMOUS DEVSECOPS SAFETY AUDIT
+Use your agent workspace skills to run a deep security and stability audit:
+
+Dependency Audit (NO AUTO-FIX): Run npm audit or yarn audit to scan for vulnerabilities. CRITICAL: Do NOT run npm audit fix or auto-update any packages, as it may break React/Vite. Just flag the severe issues in your output.
+
+Supabase Zero-Trust Check: Scan all Supabase API calls. Ensure every fetch respects Row Level Security (RLS) by passing the correct Auth JWT.
+
+Proxy Code Generation: Do not bundle external API keys (like OpenWeatherMap) in the client. Write the TypeScript code for a Supabase Edge Function to proxy the request securely, and place it in a /supabase/functions/ directory for me to deploy later.
+
+PHASE 3: RESILIENCE & CROSS-PLATFORM UI/UX
+
+Error Boundaries with Fallbacks: Ensure every major tab is wrapped in a React Error Boundary. CRITICAL: The fallback UI must include a functional 'Retry' button so users aren't permanently locked on a crash screen.
+
+Ergonomic Touch: Remove hover-dependent logic. Enforce a minimum 44x44px touch target on all interactive elements. Apply touch-action: pan-y to scrollable areas.
+
+Contrast Resilience: Ensure the glassmorphism theme text meets WCAG AAA contrast for legibility in direct sunlight.
+
+PHASE 4: FULL HANDOVER, PREVIEW & ZIP EXPORT
+I do not accept placeholder code, pseudo-code, or // ... rest of code. Output complete, production-ready React layout fixes and security patches.
+
+Upon completion:
+
+Live Preview Verification: Initialize the dev server and output a working live preview directly in the UI. Prove the scrolling works on tall components.
+
+Zip Export: Automatically generate and provide a working, downloadable .zip file of the entire updated workspace (excluding node_modules and .env secrets) directly in this chat or workspace UI. Do not consider this prompt complete until both the preview and the zip file are provided."

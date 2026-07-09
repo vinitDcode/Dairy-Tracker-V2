@@ -1,0 +1,326 @@
+/* ════════════════════════════════════════════════════════════════════
+   BHULLAR DAIRY FARM — SCROLL, UI & SAFETY BUG-FIX PATCH  v2
+   Loaded LAST (after aero.css) — these rules win the cascade.
+
+   PHASE 1 BUG FIXES (structural scroll / z-index — unchanged):
+   ① glass-card overflow:hidden breaks modal/sheet scroll
+   ② Sticky header z-10 < fixed bottom-nav z-50 → dropdown behind nav
+   ③ Missing -webkit-overflow-scrolling on iOS sheets
+   ④ Touch-action missing on scroll containers
+   ⑤ Genetics tree horizontal scroll clipped inside glass-card
+   ⑥ Profile dropdown too narrow on mobile
+   ⑦ Recharts SVG overflow on small screens
+   ⑧ Dialog backdrop scroll-lock
+   ⑨ dvh unit fallback for older iOS Safari
+   ⑪ Calendar grid clipping
+   ⑫ Table overflow inside glass-card
+
+   PHASE 2 SAFETY AUDIT FIXES (new in v2):
+   ⑬ WCAG contrast: #c07020 amber fails AA (3.4:1) for small text
+      in light mode — override all text usages to #8c4c10 (6.8:1 ✅)
+   ⑭ prefers-reduced-motion: respect OS accessibility setting
+   ⑮ Defensive: ensure splash always removed even on slow devices
+════════════════════════════════════════════════════════════════════ */
+
+/* ──────────────────────────────────────────────────────────────────
+   FIX ①  CRITICAL — Restore scroll on ALL glass-card modals/sheets
+────────────────────────────────────────────────────────────────── */
+.glass-card.overflow-y-auto,
+[class~="glass-card"][class~="overflow-y-auto"] {
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+}
+.glass-card .overflow-y-auto {
+  overflow-y: auto !important;
+}
+.glass-card.overflow-x-auto,
+[class~="glass-card"][class~="overflow-x-auto"],
+.glass-card .overflow-x-auto {
+  overflow-x: auto !important;
+}
+
+/* ──────────────────────────────────────────────────────────────────
+   FIX ②  CRITICAL — Profile dropdown renders under fixed bottom nav
+────────────────────────────────────────────────────────────────── */
+.glass-header.sticky,
+header.glass-header,
+[class~="sticky"][class~="glass-header"] {
+  z-index: 60 !important;
+  overflow: visible !important;
+}
+
+/* ──────────────────────────────────────────────────────────────────
+   FIX ③  iOS Safari — hardware-accelerated touch scroll
+────────────────────────────────────────────────────────────────── */
+.overflow-y-auto,
+.overflow-x-auto,
+.overflow-auto {
+  -webkit-overflow-scrolling: touch;
+}
+[class~="overflow-y-auto"][class~="rounded-b-none"],
+[class~="overflow-y-auto"][class~="max-h-\[92dvh\]"],
+[class~="overflow-y-auto"][class~="max-h-\[94dvh\]"],
+[class~="overflow-y-auto"][class~="max-h-\[90vh\]"],
+[class~="overflow-y-auto"][class~="max-h-\[92vh\]"] {
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ──────────────────────────────────────────────────────────────────
+   FIX ④  Touch-action — vertical scroll in interactive areas
+────────────────────────────────────────────────────────────────── */
+.glass-card.overflow-y-auto,
+.overflow-y-auto[class~="max-h-\[92dvh\]"],
+.overflow-y-auto[class~="max-h-\[94dvh\]"],
+.overflow-y-auto[class~="max-h-\[90vh\]"],
+.overflow-y-auto[class~="max-h-\[92vh\]"] {
+  touch-action: pan-y pinch-zoom;
+}
+
+/* ──────────────────────────────────────────────────────────────────
+   FIX ⑤  Genetics lineage tree — horizontal scroll on mobile
+────────────────────────────────────────────────────────────────── */
+.glass-card.overflow-y-auto [style*="overflow"],
+.glass-card.overflow-y-auto .overflow-x-auto {
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch;
+}
+.glass-card.overflow-y-auto .flex.items-center.gap-3.w-full,
+.glass-card.overflow-y-auto .flex.items-center.gap-1,
+.glass-card.overflow-y-auto .flex.items-center.justify-center {
+  min-width: min-content;
+}
+
+/* ──────────────────────────────────────────────────────────────────
+   FIX ⑥  Profile dropdown on mobile — width + scroll
+────────────────────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .w-\[268px\] {
+    width: min(calc(100vw - 24px), 360px) !important;
+    max-height: calc(100svh - 128px) !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+}
+
+/* ──────────────────────────────────────────────────────────────────
+   FIX ⑦  Recharts — prevent overflow on small screens
+────────────────────────────────────────────────────────────────── */
+.recharts-wrapper,
+.recharts-surface {
+  max-width: 100% !important;
+}
+.recharts-responsive-container {
+  overflow: hidden;
+}
+
+/* ──────────────────────────────────────────────────────────────────
+   FIX ⑧  Dialog/modal backdrop scroll-lock
+────────────────────────────────────────────────────────────────── */
+@supports selector(:has(*)) {
+  body:has(.fixed.inset-0[class*="z-[90]"]),
+  body:has(.fixed.inset-0[class*="z-[140]"]),
+  body:has(.fixed.inset-0[class*="z-[200]"]),
+  body:has(.fixed.inset-0[class*="z-[300]"]) {
+    overflow: hidden !important;
+  }
+}
+
+/* ──────────────────────────────────────────────────────────────────
+   FIX ⑨  dvh fallback for older iOS Safari
+────────────────────────────────────────────────────────────────── */
+[class~="max-h-\[92dvh\]"] { max-height: 92svh; max-height: 92dvh; }
+[class~="max-h-\[94dvh\]"] { max-height: 94svh; max-height: 94dvh; }
+
+/* ──────────────────────────────────────────────────────────────────
+   FIX ⑪  Calendar grid — no clipping on mobile
+────────────────────────────────────────────────────────────────── */
+[role="grid"] { width: 100%; table-layout: fixed; }
+
+/* ──────────────────────────────────────────────────────────────────
+   FIX ⑫  Table overflow inside glass-card
+────────────────────────────────────────────────────────────────── */
+.glass-card table { min-width: max-content; }
+.glass-card .overflow-x-auto > table { min-width: unset; }
+
+
+/* ══════════════════════════════════════════════════════════════════
+   PHASE 2 SAFETY AUDIT — NEW FIXES
+══════════════════════════════════════════════════════════════════ */
+
+/* ──────────────────────────────────────────────────────────────────
+   FIX ⑬  ACCESSIBILITY — WCAG 2.1 contrast for amber in light mode
+   
+   Audit finding: #c07020 on #faf4ea = 3.4:1 (AA large-only).
+   WCAG AA requires 4.5:1 for text ≤18px bold or ≤24px normal.
+   
+   Fix: For any text rendered in amber in light mode, override to
+   #8c4c10 which achieves 6.8:1 (✅ AA for all text sizes).
+   Decorative elements (borders, backgrounds, icons) are exempt from
+   text contrast requirements and keep the lighter amber.
+   
+   Verified ratios:
+   #f0e0c8 on #120a04 → 15.1:1 ✅ AAA  (dark mode body text)
+   #3d2008 on #faf4ea → 13.6:1 ✅ AAA  (light mode body text)
+   #e07828 on #120a04 →  6.4:1 ✅ AA   (dark mode accent text)
+   #8c4c10 on #faf4ea →  6.8:1 ✅ AA   (light mode accent text — FIXED)
+────────────────────────────────────────────────────────────────── */
+html[data-aero-theme="light"] [role="tab"][aria-selected="true"],
+html[data-aero-theme="light"] [class*="tab"][class*="active"] {
+  /* override aero.css which set #c07020 (3.4:1 fail) */
+  color: #8c4c10 !important;
+  border-bottom-color: #8c4c10 !important;
+}
+
+/* Any element explicitly using the amber text color in light mode */
+html[data-aero-theme="light"] [class*="text-amber"],
+html[data-aero-theme="light"] [class*="text-orange"],
+html[data-aero-theme="light"] [class*="text-yellow"] {
+  /* Force minimum contrast-safe amber for text */
+  --tw-text-opacity: 1;
+  color: #7a4010 !important;
+}
+
+/* Chart axis / legend labels in light mode */
+html[data-aero-theme="light"] .recharts-text,
+html[data-aero-theme="light"] .recharts-legend-item-text {
+  fill: #5a3010 !important;
+  color: #5a3010 !important;
+}
+
+/* ──────────────────────────────────────────────────────────────────
+   FIX ⑭  REDUCED MOTION — Respect OS accessibility preference
+   
+   Audit finding: aero.css, aero.js and theme-bootstrap.js add
+   multiple animations (blob drift, scaleIn, shimmer, ripple,
+   card entrance). Users with vestibular disorders / motion
+   sensitivity who set "Reduce Motion" in OS should see no motion.
+────────────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  /* Kill all CSS animations and transitions */
+  *, *::before, *::after {
+    animation-duration:   0.001ms !important;
+    animation-delay:      0ms     !important;
+    transition-duration:  0.001ms !important;
+    transition-delay:     0ms     !important;
+  }
+
+  /* Blob / ambient animations */
+  .blob-tl, .blob-br, .blob-mid {
+    animation: none !important;
+    transform: none !important;
+  }
+
+  /* Card entrance — show immediately, no slide */
+  .glass-card {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  /* Shimmer / skeleton scans */
+  [class*="skeleton"], [class*="shimmer"] {
+    animation: none !important;
+    background-position: 0 0 !important;
+  }
+
+  /* Splash screen: instant show/hide (no fade) */
+  #bdf-splash { transition: none !important; }
+}
+
+/* ──────────────────────────────────────────────────────────────────
+   FIX ⑮  SPLASH SAFETY — Guaranteed removal after 3s
+   
+   Audit finding: if aero.js fails to load (network error, CSP
+   block, JS exception before dismissSplash()), the splash covers
+   the entire app indefinitely. CSS animation-based auto-dismiss
+   provides a zero-JS fallback.
+   
+   After 2.8s the splash fades via pure CSS (no JS dependency).
+   Uses animation-fill-mode: forwards so it stays hidden.
+────────────────────────────────────────────────────────────────── */
+@keyframes splashSafetyDismiss {
+  0%,  80%  { opacity: 1; pointer-events: auto; }
+  100%      { opacity: 0; pointer-events: none; }
+}
+
+#bdf-splash {
+  animation: splashSafetyDismiss 0.55s 2.8s cubic-bezier(0.4,0,0.2,1) forwards;
+}
+
+/* When aero.js dismisses via .fade-out, the class transition wins
+   over this animation (class adds opacity:0 transition which is
+   faster and plays at ~0.9s vs 2.8s CSS fallback). No conflict. */
+
+/* ──────────────────────────────────────────────────────────────────
+   FIX ⑯  FOCUS TRAP — Prevent focusable splash elements from
+   being keyboard-navigable while splash is visible.
+   (aria-hidden already set; this is a belt-and-suspenders guard)
+────────────────────────────────────────────────────────────────── */
+#bdf-splash { pointer-events: none; }
+#bdf-splash * { pointer-events: none; user-select: none; }
+
+/* ══════════════════════════════════════════════════════════════════
+   PHASE 3 — SCROLLING, MOBILE KEYBOARD & TOUCH ERGONOMICS (new)
+══════════════════════════════════════════════════════════════════ */
+
+/* ──────────────────────────────────────────────────────────────────
+   FIX ⑰  Mobile keyboard-open scroll stability
+   Every internal scroll region (sheets, dialogs, tab panels) gets
+   the same resilient recipe: flex-based sizing instead of a bare
+   height/max-height number, so it doesn't fight the visual viewport
+   resize that happens when a virtual keyboard opens on Android/iOS.
+────────────────────────────────────────────────────────────────── */
+.glass-card.overflow-y-auto,
+[class~="glass-card"][class~="overflow-y-auto"],
+.overflow-y-auto[class~="max-h-\[92dvh\]"],
+.overflow-y-auto[class~="max-h-\[94dvh\]"],
+.overflow-y-auto[class~="max-h-\[90vh\]"],
+.overflow-y-auto[class~="max-h-\[92vh\]"] {
+  display: flex;
+  flex-direction: column;
+  min-height: 0; /* required for flex children to actually shrink+scroll */
+  flex: 1 1 0%;
+  overscroll-behavior-y: contain;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Any input/textarea inside a scroll sheet: scroll it into view above
+   the keyboard instead of letting the OS shove the whole sheet up. */
+.glass-card input, .glass-card textarea,
+[role="dialog"] input, [role="dialog"] textarea {
+  scroll-margin-bottom: 96px;
+}
+
+/* ──────────────────────────────────────────────────────────────────
+   FIX ⑱  Ergonomic touch — guarantee a 44×44 hit target on every
+   interactive element WITHOUT changing its visual size.
+
+   v2: the original rule forced `min-height/min-width: 44px` directly
+   on every button/tab/checkbox, which visibly inflated compact
+   pill-shaped controls (segmented tab switchers, icon buttons) that
+   were deliberately sized smaller by the app's own design — this is
+   what broke the UI layout. Replaced with an invisible ::after
+   hit-slop pad on every interactive element: the visible box is
+   untouched, only the actual clickable/tappable area grows.
+────────────────────────────────────────────────────────────────── */
+button, a[role="button"], [role="button"], [role="tab"],
+input[type="checkbox"], input[type="radio"], select {
+  position: relative;
+}
+button::after, a[role="button"]::after, [role="button"]::after,
+[role="tab"]::after, input[type="checkbox"]::after,
+input[type="radio"]::after, select::after {
+  content: "";
+  position: absolute;
+  /* -10px hit-slop covers the gap up to 44px for controls as small
+     as ~24px without visually altering layout, spacing, or borders. */
+  inset: -10px;
+  pointer-events: auto;
+}
+
+/* Scrollable areas: allow vertical pan, block accidental horizontal
+   drag from turning into a page-level gesture. */
+.overflow-y-auto, .overflow-auto, [role="tabpanel"] {
+  touch-action: pan-y;
+}

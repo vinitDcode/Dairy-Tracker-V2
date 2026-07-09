@@ -1,0 +1,38 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "JmmOU2Jy4divQEQfv_Mrg"
+uri = "file://screenshots/bhullar-dairy-preview.jpg"
+type = "image"
+title = "Bhullar Dairy Dashboard – Screenshot"
+
+[[outputs]]
+id = "35XqBT63Q9_QiZK47QQtB"
+uri = "file://attached_assets/bhullar-dairy-dashboard.zip"
+type = "unspecified"
+title = "Bhullar Dairy Dashboard – Static Files (ZIP)"
+
+[[outputs]]
+id = "wZ5u3VC-pWneoIp4SFZDR"
+uri = "file://handover/bhullar-dairy-handover.zip"
+type = "unspecified"
+title = "Bhullar Dairy — Agent Handover Package"
+
+[[outputs]]
+id = "m80KNJ9WgRdIOAibHKabx"
+uri = "file://attached_assets/new_clean_archive_1782018753576.zip"
+type = "unspecified"
+title = "new_clean_archive (working zip)"
+
+[[outputs]]
+id = "i04f8TEUly90DvqBCqiYp"
+uri = "file://bhullar-dairy-antigravity.zip"
+type = "unspecified"
+title = "Bhullar Dairy — Antigravity Delivery Package"
+
+[[outputs]]
+id = "bOfXx-E0BqKsuu4bSUVXb"
+uri = "file://zipFile.zip"
+type = "unspecified"
+title = "Bhullar Dairy — Genetics v2 Full Export"

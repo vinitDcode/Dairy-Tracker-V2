@@ -1,0 +1,2 @@
+- [Bhullar Dairy DOM patching](bhullar-dairy-dom-patching.md) — how to retheme a pre-built React SPA with hardcoded neon colors via CSS + MutationObserver JS
+- [Bhullar Dairy project layout](bhullar-dairy-layout.md) — artifact is at artifacts/file-viewer (not bhullar-dairy); workflow name, env vars, file roles

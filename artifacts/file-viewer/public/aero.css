@@ -1,0 +1,1359 @@
+/* ═══════════════════════════════════════════════════════════
+   BHULLAR DAIRY — DESIGN SYSTEM  v11
+   
+   Dark  "Neon Midnight":  #120a04 espresso  + #39FF14 neon green
+   Light "Golden Harvest": #fdf8f0 warm cream + #C8860A rich gold
+   
+   Changes from v10:
+   - Dark mode: card/header/nav/modal backgrounds → WARM espresso
+     (removed cold green tints that clashed with #120a04 bg)
+   - Dark mode: ambient orbs → warm orange/amber (not neon green)
+   - Light mode: complete redesign from cool green → warm cream + gold
+   - Light mode text: warm espresso brown (not dark green)
+   - Light mode buttons/FAB: golden glow
+   - Light mode progress/charts: golden gradient
+   - Light mode gbm-card vars: golden
+═══════════════════════════════════════════════════════════ */
+
+/* ── 0. FONT SYSTEM — DM Sans ────────────────────────────── */
+*, *::before, *::after {
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont,
+               'Segoe UI', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3 {
+  font-weight: 700 !important;
+  line-height: 1.25 !important;
+  letter-spacing: -0.02em !important;
+}
+h4, h5, h6 {
+  font-weight: 600 !important;
+  line-height: 1.35 !important;
+  letter-spacing: -0.01em !important;
+}
+p, li, td, th, blockquote {
+  line-height: 1.65 !important;
+  letter-spacing: 0 !important;
+  font-weight: 400 !important;
+}
+label, caption, small,
+[class*="text-xs"], [class*="text-sm"] {
+  font-weight: 500 !important;
+  letter-spacing: 0.01em !important;
+  line-height: 1.45 !important;
+}
+
+/* Dashboard metric numerals */
+[class*="text-xl"]:not(button):not(nav *),
+[class*="text-2xl"]:not(button):not(nav *),
+[class*="text-3xl"]:not(button):not(nav *),
+[class*="text-4xl"]:not(button):not(nav *) {
+  font-weight: 700 !important;
+  letter-spacing: -0.03em !important;
+  line-height: 1.1 !important;
+}
+
+td, th,
+[class*="text-xl"], [class*="text-2xl"],
+[class*="text-3xl"], [class*="text-4xl"],
+[class*="font-mono"], [class*="tabular"] {
+  font-variant-numeric: tabular-nums !important;
+  font-feature-settings: "tnum" 1 !important;
+}
+
+button {
+  font-weight: 500 !important;
+  letter-spacing: 0 !important;
+}
+nav, [role="tablist"], [role="tab"] {
+  font-weight: 500 !important;
+  letter-spacing: 0.005em !important;
+}
+
+
+/* ── 1. BACKGROUND LOCK ─────────────────────────────────── */
+html[data-aero-theme="dark"],
+html[data-aero-theme="dark"] body {
+  background-color: #120a04 !important;
+  overscroll-behavior: none;
+}
+html[data-aero-theme="light"],
+html[data-aero-theme="light"] body {
+  background-color: #fdf8f0 !important;
+  overscroll-behavior: none;
+}
+html:not([data-aero-theme]) {
+  background-color: #120a04 !important;
+}
+
+/* Text visibility */
+html[data-aero-theme="dark"],
+html[data-aero-theme="dark"] #root,
+html[data-aero-theme="dark"] .aero-bg {
+  color: rgba(240, 224, 200, 0.92);
+}
+html[data-aero-theme="light"],
+html[data-aero-theme="light"] #root,
+html[data-aero-theme="light"] .aero-bg {
+  color: rgba(55, 35, 8, 0.90);
+}
+
+/* Overscroll fill */
+html::before {
+  content: '';
+  position: fixed;
+  inset: -50vh -50vw;
+  z-index: -9999;
+  pointer-events: none;
+  background: inherit;
+}
+
+
+/* ── 2. AMBIENT BACKGROUND ──────────────────────────────── */
+/* DARK: warm orange/amber orbs over espresso — matches screenshot */
+html[data-aero-theme="dark"] .aero-bg {
+  background:
+    radial-gradient(ellipse 65% 42% at 12% 8%,  rgba(180, 80, 20, 0.08) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 38% at 82% 78%, rgba(140, 60, 10, 0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 30% at 50% 50%, rgba(57, 255, 20, 0.02) 0%, transparent 70%),
+    #120a04 !important;
+}
+/* LIGHT: warm amber/honey orbs over cream */
+html[data-aero-theme="light"] .aero-bg {
+  background:
+    radial-gradient(ellipse 65% 42% at 10% 6%,  rgba(210, 150, 30, 0.10) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 35% at 85% 80%, rgba(220, 140, 20, 0.07) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 30% at 50% 50%, rgba(200, 120, 10, 0.05) 0%, transparent 70%),
+    #fdf8f0 !important;
+}
+
+.blob-tl, .blob-br, .blob-mid {
+  animation: blobDrift 24s ease-in-out infinite alternate !important;
+  will-change: transform;
+}
+.blob-br  { animation-delay: -8s  !important; animation-duration: 30s !important; }
+.blob-mid { animation-delay: -15s !important; animation-duration: 36s !important; }
+
+@keyframes blobDrift {
+  0%   { transform: translate(0,    0)    scale(1);    }
+  50%  { transform: translate(3%,  -2%)  scale(1.04); }
+  100% { transform: translate(-2%,  3%)  scale(0.98); }
+}
+
+html[data-aero-theme="dark"] .blob-tl,
+html[data-aero-theme="dark"] .blob-br,
+html[data-aero-theme="dark"] .blob-mid {
+  filter: blur(72px) !important;
+}
+html[data-aero-theme="light"] .blob-tl,
+html[data-aero-theme="light"] .blob-br,
+html[data-aero-theme="light"] .blob-mid {
+  filter: blur(88px) !important;
+  opacity: 0.50;
+}
+
+
+/* ── 3. HEADER ──────────────────────────────────────────── */
+html[data-aero-theme="dark"] .glass-header,
+html[data-aero-theme="dark"] header {
+  backdrop-filter: blur(22px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(22px) saturate(180%) !important;
+  background: rgba(18, 10, 4, 0.90) !important;
+  border-bottom: 1.5px solid rgba(57, 255, 20, 0.09) !important;
+  box-shadow:
+    0 1px 0 rgba(57, 255, 20, 0.04) inset,
+    0 2px 24px rgba(0,0,0,0.60) !important;
+}
+html[data-aero-theme="light"] .glass-header,
+html[data-aero-theme="light"] header {
+  backdrop-filter: blur(22px) saturate(160%) !important;
+  -webkit-backdrop-filter: blur(22px) saturate(160%) !important;
+  background: rgba(253, 248, 240, 0.95) !important;
+  border-bottom: 1.5px solid rgba(180, 120, 20, 0.14) !important;
+  box-shadow:
+    0 1px 0 rgba(255, 248, 220, 0.90) inset,
+    0 2px 20px rgba(100, 60, 10, 0.08) !important;
+}
+
+
+/* ── 4. GLASS CARDS ─────────────────────────────────────── */
+/* DARK: warm espresso glass — not cold green */
+html[data-aero-theme="dark"] .glass-card {
+  backdrop-filter: blur(16px) saturate(160%) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(160%) !important;
+  background: linear-gradient(
+    150deg,
+    rgba(42, 24, 8, 0.65) 0%,
+    rgba(26, 14, 4, 0.60) 100%
+  ) !important;
+  border: 1px solid rgba(57, 255, 20, 0.10) !important;
+  box-shadow:
+    0 1px 0 rgba(57, 255, 20, 0.04) inset,
+    0 4px 20px rgba(0,0,0,0.50),
+    0 1px 3px rgba(0,0,0,0.32) !important;
+  border-radius: 16px !important;
+  position: relative; overflow: hidden;
+  transition:
+    border-color 0.25s ease-out,
+    box-shadow 0.25s ease-out,
+    transform 0.20s cubic-bezier(0.22,1,0.36,1) !important;
+}
+html[data-aero-theme="dark"] .glass-card:hover {
+  border-color: rgba(57, 255, 20, 0.18) !important;
+  box-shadow:
+    0 1px 0 rgba(57, 255, 20, 0.07) inset,
+    0 8px 36px rgba(0,0,0,0.55),
+    0 0 0 1px rgba(57, 255, 20, 0.05),
+    0 0 18px rgba(57, 255, 20, 0.04) !important;
+}
+
+/* LIGHT: warm cream/parchment glass */
+html[data-aero-theme="light"] .glass-card {
+  backdrop-filter: blur(16px) saturate(140%) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(140%) !important;
+  background: linear-gradient(
+    150deg,
+    rgba(255, 252, 240, 0.92) 0%,
+    rgba(252, 244, 224, 0.86) 100%
+  ) !important;
+  border: 1px solid rgba(180, 120, 20, 0.14) !important;
+  box-shadow:
+    0 1px 0 rgba(255, 252, 240, 0.98) inset,
+    0 3px 16px rgba(100, 60, 10, 0.09),
+    0 1px 3px rgba(100, 60, 10, 0.06) !important;
+  border-radius: 16px !important;
+  position: relative; overflow: hidden;
+  transition:
+    border-color 0.25s ease-out,
+    box-shadow 0.25s ease-out,
+    transform 0.20s cubic-bezier(0.22,1,0.36,1) !important;
+}
+html[data-aero-theme="light"] .glass-card:hover {
+  border-color: rgba(200, 134, 10, 0.28) !important;
+  box-shadow:
+    0 1px 0 rgba(255, 252, 240, 0.99) inset,
+    0 6px 28px rgba(100, 60, 10, 0.12),
+    0 0 0 1px rgba(200, 134, 10, 0.08),
+    0 0 16px rgba(200, 134, 10, 0.06) !important;
+}
+
+/* Gloss hairline */
+.glass-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 1px;
+  pointer-events: none; z-index: 1;
+}
+html[data-aero-theme="dark"] .glass-card::before {
+  background: linear-gradient(90deg,
+    transparent,
+    rgba(57, 255, 20, 0.07) 35%,
+    rgba(57, 255, 20, 0.07) 65%,
+    transparent);
+}
+html[data-aero-theme="light"] .glass-card::before {
+  background: linear-gradient(90deg,
+    transparent,
+    rgba(255, 248, 210, 0.95) 35%,
+    rgba(255, 248, 210, 0.95) 65%,
+    transparent);
+}
+
+
+/* ── 5. NAV / TABS ──────────────────────────────────────── */
+/* DARK: warm espresso nav */
+html[data-aero-theme="dark"] nav,
+html[data-aero-theme="dark"] [role="tablist"] {
+  backdrop-filter: blur(18px) saturate(170%) !important;
+  -webkit-backdrop-filter: blur(18px) saturate(170%) !important;
+  background: rgba(14, 8, 2, 0.88) !important;
+  border-color: rgba(57, 255, 20, 0.07) !important;
+}
+/* LIGHT: warm cream nav */
+html[data-aero-theme="light"] nav,
+html[data-aero-theme="light"] [role="tablist"] {
+  backdrop-filter: blur(18px) saturate(150%) !important;
+  -webkit-backdrop-filter: blur(18px) saturate(150%) !important;
+  background: rgba(252, 247, 234, 0.95) !important;
+  border-color: rgba(180, 120, 20, 0.10) !important;
+}
+
+/* Active tab — DARK: neon green / LIGHT: rich gold */
+html[data-aero-theme="dark"] [role="tab"][aria-selected="true"] {
+  color: #39FF14 !important;
+  font-weight: 600 !important;
+  border-bottom: 2.5px solid #39FF14 !important;
+  text-shadow: 0 0 14px rgba(57, 255, 20, 0.40) !important;
+}
+html[data-aero-theme="dark"] [role="tab"]:not([aria-selected="true"]) {
+  color: rgba(240, 224, 200, 0.48) !important;
+  font-weight: 500 !important;
+}
+html[data-aero-theme="light"] [role="tab"][aria-selected="true"] {
+  color: #C8860A !important;
+  font-weight: 600 !important;
+  border-bottom: 2.5px solid #C8860A !important;
+  text-shadow: 0 0 12px rgba(200, 134, 10, 0.30) !important;
+}
+html[data-aero-theme="light"] [role="tab"]:not([aria-selected="true"]) {
+  color: rgba(55, 35, 8, 0.50) !important;
+  font-weight: 500 !important;
+}
+
+/* Bottom nav active item */
+html[data-aero-theme="dark"] nav [aria-selected="true"],
+html[data-aero-theme="dark"] nav [class*="active"] {
+  color: #39FF14 !important;
+  filter: drop-shadow(0 0 6px rgba(57,255,20,0.50)) !important;
+}
+html[data-aero-theme="light"] nav [aria-selected="true"],
+html[data-aero-theme="light"] nav [class*="active"] {
+  color: #C8860A !important;
+  filter: drop-shadow(0 0 5px rgba(200,134,10,0.45)) !important;
+}
+
+
+/* ── 6. BUTTONS ─────────────────────────────────────────── */
+button {
+  min-height: 36px;
+}
+button:not([class*="ghost"]):not([class*="link"]):not([class*="icon"]) {
+  position: relative; overflow: hidden;
+  transition:
+    transform 0.18s cubic-bezier(0.22,1,0.36,1),
+    box-shadow 0.18s ease-out,
+    filter 0.18s ease-out !important;
+}
+button:not([class*="ghost"]):not([class*="link"]):not([class*="icon"])::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 50%;
+  background: linear-gradient(180deg, rgba(255,255,255,0.11) 0%, transparent 100%);
+  border-radius: inherit; pointer-events: none;
+}
+button:not([class*="ghost"]):not([class*="link"]):not([class*="icon"]):hover {
+  transform: translateY(-1px) !important;
+  filter: brightness(1.08) !important;
+}
+button:not([class*="ghost"]):not([class*="link"]):not([class*="icon"]):active {
+  transform: translateY(0) scale(0.96) !important;
+  transition-duration: 0.09s !important;
+  filter: brightness(0.94) !important;
+}
+
+/* Primary button glow on hover */
+html[data-aero-theme="dark"] button[class*="bg-"]:not([class*="ghost"]):not([class*="outline"]):hover {
+  box-shadow: 0 4px 22px rgba(57, 255, 20, 0.32) !important;
+}
+html[data-aero-theme="light"] button[class*="bg-"]:not([class*="ghost"]):not([class*="outline"]):hover {
+  box-shadow: 0 4px 20px rgba(200, 134, 10, 0.30) !important;
+}
+
+/* FAB — floating action button */
+html[data-aero-theme="dark"] button[class*="fixed"],
+html[data-aero-theme="dark"] button[class*="rounded-full"]:not([class*="ghost"]):not([class*="outline"]) {
+  box-shadow:
+    0 0 0 1px rgba(57, 255, 20, 0.28),
+    0 0 22px rgba(57, 255, 20, 0.22),
+    0 8px 28px rgba(0,0,0,0.58) !important;
+}
+html[data-aero-theme="dark"] button[class*="fixed"]:hover,
+html[data-aero-theme="dark"] button[class*="rounded-full"]:not([class*="ghost"]):not([class*="outline"]):hover {
+  transform: scale(1.06) !important;
+  box-shadow:
+    0 0 0 1px rgba(57, 255, 20, 0.48),
+    0 0 30px rgba(57, 255, 20, 0.34),
+    0 10px 36px rgba(0,0,0,0.65) !important;
+}
+html[data-aero-theme="light"] button[class*="fixed"],
+html[data-aero-theme="light"] button[class*="rounded-full"]:not([class*="ghost"]):not([class*="outline"]) {
+  box-shadow:
+    0 0 0 1px rgba(200, 134, 10, 0.30),
+    0 0 20px rgba(200, 134, 10, 0.20),
+    0 8px 26px rgba(100, 60, 10, 0.32) !important;
+}
+html[data-aero-theme="light"] button[class*="fixed"]:hover,
+html[data-aero-theme="light"] button[class*="rounded-full"]:not([class*="ghost"]):not([class*="outline"]):hover {
+  transform: scale(1.06) !important;
+  box-shadow:
+    0 0 0 1px rgba(200, 134, 10, 0.50),
+    0 0 28px rgba(200, 134, 10, 0.30),
+    0 10px 34px rgba(100, 60, 10, 0.42) !important;
+}
+
+
+/* ── 7. INPUTS ──────────────────────────────────────────── */
+input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+textarea,
+select {
+  min-height: 40px;
+  font-size: 15px !important;
+  line-height: 1.5 !important;
+}
+
+/* DARK: warm espresso input bg */
+html[data-aero-theme="dark"] input:not([type="checkbox"]):not([type="radio"]),
+html[data-aero-theme="dark"] textarea,
+html[data-aero-theme="dark"] select {
+  background: rgba(30, 17, 6, 0.60) !important;
+  border: 1px solid rgba(57, 255, 20, 0.14) !important;
+  color: rgba(240, 224, 200, 0.92) !important;
+  border-radius: 10px !important;
+  transition: border-color 0.20s ease-out, box-shadow 0.20s ease-out !important;
+}
+html[data-aero-theme="dark"] input:not([type="checkbox"]):not([type="radio"]):focus,
+html[data-aero-theme="dark"] textarea:focus,
+html[data-aero-theme="dark"] select:focus {
+  border-color: rgba(57, 255, 20, 0.40) !important;
+  box-shadow: 0 0 0 3px rgba(57, 255, 20, 0.08) !important;
+  outline: none !important;
+}
+
+/* LIGHT: warm cream input */
+html[data-aero-theme="light"] input:not([type="checkbox"]):not([type="radio"]),
+html[data-aero-theme="light"] textarea,
+html[data-aero-theme="light"] select {
+  background: rgba(255, 250, 235, 0.90) !important;
+  border: 1px solid rgba(180, 120, 20, 0.20) !important;
+  color: rgba(55, 35, 8, 0.90) !important;
+  border-radius: 10px !important;
+  transition: border-color 0.20s ease-out, box-shadow 0.20s ease-out !important;
+}
+html[data-aero-theme="light"] input:not([type="checkbox"]):not([type="radio"]):focus,
+html[data-aero-theme="light"] textarea:focus,
+html[data-aero-theme="light"] select:focus {
+  border-color: rgba(200, 134, 10, 0.50) !important;
+  box-shadow: 0 0 0 3px rgba(200, 134, 10, 0.10) !important;
+  outline: none !important;
+}
+
+html[data-aero-theme="dark"] ::placeholder {
+  color: rgba(240, 224, 200, 0.32) !important;
+  font-weight: 400 !important;
+}
+html[data-aero-theme="light"] ::placeholder {
+  color: rgba(55, 35, 8, 0.38) !important;
+  font-weight: 400 !important;
+}
+
+
+/* ── 8. MODALS & BOTTOM SHEETS ──────────────────────────── */
+/* DARK: warm espresso modal */
+html[data-aero-theme="dark"] [role="dialog"] > div,
+html[data-aero-theme="dark"] [class*="dialog-content"],
+html[data-aero-theme="dark"] [class*="sheet-content"] {
+  backdrop-filter: blur(28px) saturate(190%) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(190%) !important;
+  background: linear-gradient(
+    150deg,
+    rgba(38, 22, 8, 0.97) 0%,
+    rgba(24, 14, 4, 0.98) 100%
+  ) !important;
+  border: 1px solid rgba(57, 255, 20, 0.11) !important;
+  box-shadow:
+    0 1px 0 rgba(57, 255, 20, 0.04) inset,
+    0 24px 60px rgba(0,0,0,0.80) !important;
+  animation: scaleIn 0.26s cubic-bezier(0.22,1,0.36,1) both !important;
+}
+/* LIGHT: warm cream modal */
+html[data-aero-theme="light"] [role="dialog"] > div,
+html[data-aero-theme="light"] [class*="dialog-content"],
+html[data-aero-theme="light"] [class*="sheet-content"] {
+  backdrop-filter: blur(28px) saturate(160%) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(160%) !important;
+  background: rgba(255, 252, 242, 0.98) !important;
+  border: 1px solid rgba(180, 120, 20, 0.14) !important;
+  box-shadow:
+    0 1px 0 rgba(255, 248, 220, 0.95) inset,
+    0 24px 60px rgba(100, 60, 10, 0.18) !important;
+  animation: scaleIn 0.26s cubic-bezier(0.22,1,0.36,1) both !important;
+}
+
+/* Overlay */
+html[data-aero-theme="dark"] [class*="overlay"] {
+  background: rgba(6, 4, 2, 0.82) !important;
+  backdrop-filter: blur(4px) !important;
+}
+html[data-aero-theme="light"] [class*="overlay"] {
+  background: rgba(80, 50, 10, 0.22) !important;
+  backdrop-filter: blur(4px) !important;
+}
+
+
+/* ── 9. DROPDOWNS ───────────────────────────────────────── */
+/* DARK: warm espresso dropdown */
+html[data-aero-theme="dark"] [role="listbox"],
+html[data-aero-theme="dark"] [role="menu"],
+html[data-aero-theme="dark"] [class*="select-content"],
+html[data-aero-theme="dark"] [class*="dropdown-content"] {
+  backdrop-filter: blur(22px) saturate(170%) !important;
+  -webkit-backdrop-filter: blur(22px) saturate(170%) !important;
+  background: rgba(26, 15, 5, 0.97) !important;
+  border: 1px solid rgba(57, 255, 20, 0.13) !important;
+  box-shadow:
+    0 1px 0 rgba(57, 255, 20, 0.03) inset,
+    0 14px 44px rgba(0,0,0,0.72) !important;
+  border-radius: 12px !important;
+}
+/* LIGHT: warm cream dropdown */
+html[data-aero-theme="light"] [role="listbox"],
+html[data-aero-theme="light"] [role="menu"],
+html[data-aero-theme="light"] [class*="select-content"],
+html[data-aero-theme="light"] [class*="dropdown-content"] {
+  backdrop-filter: blur(22px) saturate(150%) !important;
+  -webkit-backdrop-filter: blur(22px) saturate(150%) !important;
+  background: rgba(255, 252, 242, 0.99) !important;
+  border: 1px solid rgba(180, 120, 20, 0.14) !important;
+  box-shadow:
+    0 1px 0 rgba(255, 248, 220, 0.90) inset,
+    0 14px 44px rgba(100, 60, 10, 0.16) !important;
+  border-radius: 12px !important;
+}
+
+html[data-aero-theme="dark"] [role="option"]:hover,
+html[data-aero-theme="dark"] [role="menuitem"]:hover {
+  background: rgba(57, 255, 20, 0.08) !important;
+}
+html[data-aero-theme="light"] [role="option"]:hover,
+html[data-aero-theme="light"] [role="menuitem"]:hover {
+  background: rgba(200, 134, 10, 0.08) !important;
+}
+
+
+/* ── 10. CHART ELEMENTS ─────────────────────────────────── */
+html[data-aero-theme="dark"] .recharts-tooltip-wrapper > * {
+  backdrop-filter: blur(16px) !important;
+  background: rgba(30, 17, 6, 0.95) !important;
+  border: 1px solid rgba(57, 255, 20, 0.18) !important;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.62) !important;
+  border-radius: 10px !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  color: rgba(240, 224, 200, 0.92) !important;
+}
+html[data-aero-theme="light"] .recharts-tooltip-wrapper > * {
+  backdrop-filter: blur(16px) !important;
+  background: rgba(255, 252, 242, 0.97) !important;
+  border: 1px solid rgba(180, 120, 20, 0.18) !important;
+  box-shadow: 0 8px 28px rgba(100, 60, 10, 0.16) !important;
+  border-radius: 10px !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  color: rgba(55, 35, 8, 0.90) !important;
+}
+
+/* Gridlines */
+html[data-aero-theme="dark"] .recharts-cartesian-grid line {
+  stroke: rgba(57, 255, 20, 0.05) !important;
+}
+html[data-aero-theme="light"] .recharts-cartesian-grid line {
+  stroke: rgba(180, 120, 20, 0.09) !important;
+}
+
+/* Axis text */
+html[data-aero-theme="dark"] .recharts-text {
+  fill: rgba(240, 224, 200, 0.52) !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+}
+html[data-aero-theme="light"] .recharts-text {
+  fill: rgba(55, 35, 8, 0.56) !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+}
+
+/* Chart lines */
+html[data-aero-theme="dark"] .recharts-area-curve,
+html[data-aero-theme="dark"] .recharts-line-curve {
+  stroke: #39FF14 !important;
+}
+html[data-aero-theme="light"] .recharts-area-curve,
+html[data-aero-theme="light"] .recharts-line-curve {
+  stroke: #C8860A !important;
+}
+
+
+/* ── 11. ENTRANCE ANIMATIONS ────────────────────────────── */
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.96) translateY(6px); }
+  to   { opacity: 1; transform: scale(1)    translateY(0);   }
+}
+.glass-card {
+  animation: scaleIn 0.28s cubic-bezier(0.22,1,0.36,1) both;
+}
+
+
+/* ── 12. DOT GRID ───────────────────────────────────────── */
+html[data-aero-theme="dark"] .dot-grid {
+  background-image: radial-gradient(rgba(57, 255, 20, 0.05) 1px, transparent 1px) !important;
+  background-size: 26px 26px !important;
+}
+html[data-aero-theme="light"] .dot-grid {
+  background-image: radial-gradient(rgba(180, 120, 20, 0.08) 1px, transparent 1px) !important;
+  background-size: 26px 26px !important;
+}
+
+
+/* ── 13. TABLE ROWS ─────────────────────────────────────── */
+html[data-aero-theme="dark"] tr:hover td {
+  background: rgba(57, 255, 20, 0.04) !important;
+  transition: background 0.15s ease !important;
+}
+html[data-aero-theme="light"] tr:hover td {
+  background: rgba(200, 134, 10, 0.06) !important;
+  transition: background 0.15s ease !important;
+}
+html[data-aero-theme="dark"] tr:nth-child(even) td {
+  background: rgba(57, 255, 20, 0.015) !important;
+}
+html[data-aero-theme="light"] tr:nth-child(even) td {
+  background: rgba(200, 134, 10, 0.03) !important;
+}
+
+td { font-size: 13px !important; font-weight: 400 !important; }
+th {
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.04em !important;
+  text-transform: uppercase !important;
+}
+html[data-aero-theme="dark"] th {
+  color: rgba(240, 224, 200, 0.48) !important;
+}
+html[data-aero-theme="light"] th {
+  color: rgba(55, 35, 8, 0.48) !important;
+}
+
+
+/* ── 14. PROGRESS BARS ──────────────────────────────────── */
+html[data-aero-theme="dark"] [role="progressbar"] {
+  background: rgba(57, 255, 20, 0.11) !important;
+  border-radius: 99px !important;
+}
+html[data-aero-theme="dark"] [role="progressbar"] > * {
+  background: linear-gradient(90deg, #00b060, #39FF14, #00E5FF) !important;
+  box-shadow: 0 0 10px rgba(57, 255, 20, 0.38) !important;
+  border-radius: 99px !important;
+}
+html[data-aero-theme="light"] [role="progressbar"] {
+  background: rgba(200, 134, 10, 0.14) !important;
+  border-radius: 99px !important;
+}
+html[data-aero-theme="light"] [role="progressbar"] > * {
+  background: linear-gradient(90deg, #a06010, #C8860A, #E8A820) !important;
+  box-shadow: 0 0 10px rgba(200, 134, 10, 0.32) !important;
+  border-radius: 99px !important;
+}
+
+
+/* ── 15. BADGES / STATUS PILLS ──────────────────────────── */
+html[data-aero-theme="dark"] [class*="badge"],
+html[data-aero-theme="dark"] [class*="chip"] {
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.02em !important;
+  border-radius: 6px !important;
+  padding: 2px 8px !important;
+  border: 1px solid rgba(57, 255, 20, 0.18) !important;
+}
+html[data-aero-theme="light"] [class*="badge"],
+html[data-aero-theme="light"] [class*="chip"] {
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.02em !important;
+  border-radius: 6px !important;
+  padding: 2px 8px !important;
+  border: 1px solid rgba(180, 120, 20, 0.20) !important;
+}
+
+
+/* ── 16. DIVIDERS ───────────────────────────────────────── */
+html[data-aero-theme="dark"] hr {
+  border-color: rgba(57, 255, 20, 0.07) !important;
+}
+html[data-aero-theme="light"] hr {
+  border-color: rgba(180, 120, 20, 0.12) !important;
+}
+
+
+/* ── 17. GLOBAL TRANSITIONS ─────────────────────────────── */
+a, button, [role="button"], [role="tab"],
+input, textarea, select {
+  transition-timing-function: cubic-bezier(0.22,1,0.36,1) !important;
+  transition-duration: 0.18s !important;
+}
+
+
+/* ── 18. FOCUS RINGS ────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid rgba(57, 255, 20, 0.70) !important;
+  outline-offset: 2px !important;
+  border-radius: 4px !important;
+}
+html[data-aero-theme="light"] :focus-visible {
+  outline-color: rgba(200, 134, 10, 0.80) !important;
+}
+
+
+/* ── 19. SAFE AREA / MOBILE ─────────────────────────────── */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .glass-header[class*="fixed"][class*="bottom"] {
+    padding-bottom: max(env(safe-area-inset-bottom), 4px);
+  }
+}
+@media (hover: none) {
+  button:hover { transform: none !important; filter: none !important; }
+  .glass-card:hover { box-shadow: inherit !important; border-color: inherit !important; }
+}
+
+
+/* ── 20. SCROLLBAR HIDDEN ───────────────────────────────── */
+* { scrollbar-width: none !important; -ms-overflow-style: none !important; }
+*::-webkit-scrollbar { display: none !important; }
+
+
+/* ── 21. SHIMMER / SKELETON ─────────────────────────────── */
+html[data-aero-theme="dark"] [class*="skeleton"],
+html[data-aero-theme="dark"] [class*="shimmer"] {
+  background: linear-gradient(90deg,
+    rgba(57, 255, 20, 0.03) 25%,
+    rgba(57, 255, 20, 0.07) 50%,
+    rgba(57, 255, 20, 0.03) 75%
+  ) !important;
+  background-size: 200% 100% !important;
+  animation: shimmerWarm 1.8s infinite !important;
+}
+html[data-aero-theme="light"] [class*="skeleton"],
+html[data-aero-theme="light"] [class*="shimmer"] {
+  background: linear-gradient(90deg,
+    rgba(200, 134, 10, 0.05) 25%,
+    rgba(200, 134, 10, 0.12) 50%,
+    rgba(200, 134, 10, 0.05) 75%
+  ) !important;
+  background-size: 200% 100% !important;
+  animation: shimmerWarm 1.8s infinite !important;
+}
+@keyframes shimmerWarm {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+
+/* ── 22. TEXT SELECTION ─────────────────────────────────── */
+::selection {
+  background: rgba(57, 255, 20, 0.22) !important;
+  color: inherit !important;
+}
+html[data-aero-theme="light"] ::selection {
+  background: rgba(200, 134, 10, 0.22) !important;
+}
+
+
+/* ── 23. EMPTY STATES ───────────────────────────────────── */
+html[data-aero-theme="dark"] [class*="empty"],
+html[data-aero-theme="dark"] .glass-card:has(button) {
+  background: linear-gradient(
+    145deg,
+    rgba(48, 28, 10, 0.70) 0%,
+    rgba(30, 18, 6, 0.65) 100%
+  ) !important;
+}
+html[data-aero-theme="light"] [class*="empty"],
+html[data-aero-theme="light"] .glass-card:has(button) {
+  background: linear-gradient(
+    145deg,
+    rgba(255, 252, 238, 0.96) 0%,
+    rgba(252, 244, 220, 0.90) 100%
+  ) !important;
+}
+
+
+/* ── 24. CATTLE DETAIL — CONTENT VISIBILITY FIX ─────────── */
+html[data-aero-theme="dark"] [class*="overflow-y-auto"] {
+  color: rgba(240, 224, 200, 0.90) !important;
+}
+html[data-aero-theme="dark"] [class*="overflow-y-auto"] p,
+html[data-aero-theme="dark"] [class*="overflow-y-auto"] span,
+html[data-aero-theme="dark"] [class*="overflow-y-auto"] div {
+  color: inherit;
+}
+
+/* Cattle photo placeholder */
+html[data-aero-theme="dark"] [class*="aspect-square"]:not(.glass-card),
+html[data-aero-theme="dark"] [class*="aspect-video"]:not(.glass-card),
+html[data-aero-theme="dark"] [class*="aspect-ratio"]:not(.glass-card) {
+  background: rgba(40, 22, 8, 0.65) !important;
+  border: 1px solid rgba(57, 255, 20, 0.08) !important;
+  border-radius: 12px !important;
+}
+
+/* Cattle detail sub-tab panels — ensure scrolling works */
+.glass-card [role="tabpanel"],
+.glass-card [class*="tab-panel"],
+.glass-card [class*="tabpanel"] {
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  max-height: none !important;
+  height: auto !important;
+}
+
+.glass-card.overflow-y-auto > *,
+.glass-card.overflow-y-auto [role="tabpanel"] {
+  overflow: visible !important;
+}
+.glass-card.overflow-y-auto .grid,
+.glass-card.overflow-y-auto [class*="grid"] {
+  overflow: visible !important;
+}
+
+
+/* ── 25. GENETICS INTELLIGENCE MODULES (gbm-card) ──────── */
+:root {
+  --gbm-ok:          #39FF14;
+  --gbm-warn:        #FFD600;
+  --gbm-danger:      #FF4444;
+  --gbm-ring-track:  rgba(255,255,255,0.08);
+  --gbm-card-bg:     rgba(38, 22, 8, 0.82);
+  --gbm-border:      rgba(57, 255, 20, 0.11);
+  --gbm-text:        rgba(240, 224, 200, 0.90);
+  --gbm-muted:       rgba(240, 224, 200, 0.50);
+  --gbm-label:       rgba(240, 224, 200, 0.52);
+}
+
+html[data-aero-theme="light"] {
+  --gbm-ok:          #C8860A;
+  --gbm-warn:        #B06000;
+  --gbm-danger:      #cc2222;
+  --gbm-ring-track:  rgba(0,0,0,0.08);
+  --gbm-card-bg:     rgba(255, 250, 235, 0.90);
+  --gbm-border:      rgba(180, 120, 20, 0.18);
+  --gbm-text:        rgba(55, 35, 8, 0.90);
+  --gbm-muted:       rgba(55, 35, 8, 0.52);
+  --gbm-label:       rgba(55, 35, 8, 0.52);
+}
+
+.gbm-wrapper {
+  padding: 0 0 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.gbm-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0 6px;
+}
+.gbm-header-line {
+  flex: 1;
+  height: 1px;
+  background: var(--gbm-border);
+}
+.gbm-header-text {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gbm-ok);
+  opacity: 0.65;
+  white-space: nowrap;
+}
+html[data-aero-theme="light"] .gbm-header-text { color: #C8860A; }
+
+/* Always single-column — injected inside a narrow modal panel */
+.gbm-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.gbm-card {
+  background: var(--gbm-card-bg);
+  border: 1px solid var(--gbm-border);
+  border-radius: 12px;
+  padding: 13px 14px 11px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: var(--gbm-text);
+  font-size: 13px;
+  overflow: hidden;
+  /* Subtle left accent matching app's card style */
+  border-left: 2px solid rgba(57,255,20,0.28);
+}
+html[data-aero-theme="light"] .gbm-card {
+  border-left-color: rgba(200,134,10,0.35);
+}
+
+.gbm-card-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  font-size: 12px;
+  color: var(--gbm-ok);
+  letter-spacing: 0.01em;
+  margin-bottom: 3px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--gbm-border);
+}
+html[data-aero-theme="light"] .gbm-card-title { color: #C8860A; }
+html[data-aero-theme="light"] .gbm-card-title { color: #C8860A; }
+
+.gbm-icon { font-size: 14px; line-height: 1; }
+.gbm-card-body { display: flex; flex-direction: column; gap: 5px; flex: 1; }
+
+.gbm-loading {
+  font-size: 12px;
+  color: var(--gbm-muted);
+  font-style: italic;
+}
+.gbm-error {
+  font-size: 12px;
+  color: var(--gbm-danger);
+}
+.gbm-muted {
+  font-size: 12px;
+  color: var(--gbm-muted);
+}
+
+.gbm-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 0;
+  border-bottom: 1px solid rgba(57,255,20,0.05);
+}
+html[data-aero-theme="light"] .gbm-row {
+  border-bottom-color: rgba(180,120,20,0.08);
+}
+.gbm-row:last-child { border-bottom: none; }
+.gbm-label {
+  font-size: 11px;
+  color: var(--gbm-label);
+  font-weight: 500;
+}
+.gbm-value {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--gbm-text);
+}
+.gbm-value--warn { color: var(--gbm-warn) !important; }
+.gbm-mono { font-variant-numeric: tabular-nums; }
+
+/* Alerts */
+.gbm-alert {
+  display: flex;
+  gap: 7px;
+  align-items: flex-start;
+  padding: 7px 9px;
+  border-radius: 8px;
+  font-size: 12px;
+  line-height: 1.4;
+}
+.gbm-alert--ok   { background: rgba(57,255,20,0.08);  border: 1px solid rgba(57,255,20,0.16);  color: #39FF14; }
+.gbm-alert--warn { background: rgba(255,214,0,0.09);   border: 1px solid rgba(255,214,0,0.20);   color: #FFD600; }
+.gbm-alert--danger { background: rgba(255,68,68,0.09); border: 1px solid rgba(255,68,68,0.20); color: #FF6666; }
+.gbm-alert--urgent { background: rgba(255,68,68,0.12); border: 1px solid rgba(255,68,68,0.25); color: #FF4444; }
+.gbm-alert-icon { font-size: 14px; line-height: 1; flex-shrink: 0; margin-top: 1px; }
+
+html[data-aero-theme="light"] .gbm-alert--ok   { background: rgba(200,134,10,0.08); border-color: rgba(200,134,10,0.20); color: #8B5E00; }
+
+/* Bull ranking */
+.gbm-bull-row {
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(57,255,20,0.05);
+}
+.gbm-bull-row:last-child { border-bottom: none; }
+.gbm-bull-row--top { border-color: rgba(57,255,20,0.10); }
+html[data-aero-theme="light"] .gbm-bull-row { border-bottom-color: rgba(180,120,20,0.08); }
+
+.gbm-bull-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 2px;
+}
+.gbm-bull-rank {
+  font-size: 10px;
+  font-weight: 700;
+  color: #39FF14;
+  opacity: 0.7;
+  width: 20px;
+}
+html[data-aero-theme="light"] .gbm-bull-rank { color: #C8860A; }
+.gbm-bull-name {
+  font-size: 12px;
+  font-weight: 600;
+  flex: 1;
+  color: var(--gbm-text);
+}
+.gbm-bull-units { font-size: 11px; color: var(--gbm-muted); }
+.gbm-bull-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--gbm-muted);
+  margin-bottom: 4px;
+}
+.gbm-bull-score-label { font-size: 11px; }
+
+/* Progress bar */
+.gbm-bar-track {
+  height: 5px;
+  background: rgba(57,255,20,0.10);
+  border-radius: 99px;
+  overflow: hidden;
+}
+html[data-aero-theme="light"] .gbm-bar-track { background: rgba(200,134,10,0.12); }
+.gbm-bar-fill {
+  height: 100%;
+  width: var(--gbm-w, 0%);
+  background: linear-gradient(90deg, #00b060, #39FF14);
+  border-radius: 99px;
+  box-shadow: 0 0 8px rgba(57,255,20,0.28);
+  transition: width 0.8s cubic-bezier(0.22,1,0.36,1);
+}
+html[data-aero-theme="light"] .gbm-bar-fill {
+  background: linear-gradient(90deg, #a06010, #C8860A) !important;
+  box-shadow: 0 0 8px rgba(200,134,10,0.28) !important;
+}
+.gbm-bar-fill--alert {
+  background: linear-gradient(90deg, #cc2222, #FF4444) !important;
+  box-shadow: 0 0 8px rgba(255,68,68,0.30) !important;
+}
+
+/* Heat cycle ring */
+.gbm-ring-wrap { position: relative; display: inline-flex; flex-shrink: 0; }
+.gbm-ring-overlay {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+}
+.gbm-ring-num {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1;
+  color: #39FF14;
+  font-variant-numeric: tabular-nums;
+}
+html[data-aero-theme="light"] .gbm-ring-num { color: #C8860A; }
+.gbm-ring-num--urgent { color: #FF4444 !important; }
+.gbm-ring-sub {
+  font-size: 9px;
+  color: var(--gbm-muted);
+  text-align: center;
+}
+.gbm-heat-flex { display: flex; gap: 10px; align-items: center; }
+.gbm-heat-details { flex: 1; }
+
+/* AM/PM banner */
+.gbm-ampm-banner {
+  border-radius: 10px;
+  padding: 8px 10px;
+  border: 1px solid rgba(57,255,20,0.14);
+  background: rgba(57,255,20,0.04);
+}
+html[data-aero-theme="light"] .gbm-ampm-banner {
+  border-color: rgba(200,134,10,0.16);
+  background: rgba(200,134,10,0.04);
+}
+.gbm-ampm--pm { border-color: rgba(0,229,255,0.14) !important; background: rgba(0,229,255,0.04) !important; }
+.gbm-ampm-detect-row {
+  display: flex; justify-content: space-between;
+  align-items: center; margin-bottom: 4px;
+}
+.gbm-ampm-badge {
+  font-size: 11px; font-weight: 700;
+  color: #39FF14;
+}
+html[data-aero-theme="light"] .gbm-ampm-badge { color: #C8860A; }
+.gbm-ampm--pm .gbm-ampm-badge { color: #00E5FF !important; }
+.gbm-ampm-date { font-size: 11px; color: var(--gbm-muted); }
+.gbm-ampm-arrow { font-size: 14px; color: var(--gbm-muted); text-align: center; margin: 2px 0; }
+.gbm-ampm-action-row { display: flex; gap: 7px; align-items: center; font-size: 12px; font-weight: 600; }
+.gbm-ampm-idle { text-align: center; padding: 6px 0; }
+.gbm-ampm-big-icon { font-size: 28px; margin-bottom: 6px; }
+.gbm-ampm-note { font-size: 11px; color: var(--gbm-muted); margin-top: 5px; }
+
+/* Section / batch analytics */
+.gbm-section { margin-bottom: 6px; }
+.gbm-section-head {
+  display: flex; justify-content: space-between;
+  font-size: 11px; font-weight: 600;
+  color: var(--gbm-muted);
+  text-transform: uppercase; letter-spacing: 0.06em;
+  margin-bottom: 6px;
+}
+.gbm-stat-row { padding: 5px 0; border-bottom: 1px solid rgba(57,255,20,0.05); }
+html[data-aero-theme="light"] .gbm-stat-row { border-bottom-color: rgba(180,120,20,0.07); }
+.gbm-stat-row--alert { border-color: rgba(255,68,68,0.10); }
+.gbm-stat-header { display: flex; justify-content: space-between; margin-bottom: 4px; }
+.gbm-stat-name { font-size: 12px; font-weight: 500; }
+.gbm-stat-pct { font-size: 12px; font-weight: 600; color: #39FF14; }
+html[data-aero-theme="light"] .gbm-stat-pct { color: #C8860A; }
+.gbm-stat-pct--alert { color: #FF4444 !important; }
+.gbm-stat-warn {
+  font-size: 11px; color: var(--gbm-danger);
+  margin: 3px 0 0; line-height: 1.4;
+}
+.gbm-divider-line { border: none; border-top: 1px solid rgba(57,255,20,0.07); margin: 8px 0; }
+html[data-aero-theme="light"] .gbm-divider-line { border-top-color: rgba(180,120,20,0.10); }
+.gbm-badge { font-size: 10px; font-weight: 700; padding: 1px 5px; border-radius: 4px; }
+.gbm-badge--am  { background: rgba(57,255,20,0.12);  color: #39FF14; }
+.gbm-badge--pm  { background: rgba(0,229,255,0.12);  color: #00E5FF; }
+.gbm-badge--na  { background: rgba(255,255,255,0.06); color: var(--gbm-muted); }
+.gbm-badge--alert { background: rgba(255,68,68,0.12); color: #FF4444; }
+html[data-aero-theme="light"] .gbm-badge--am { background: rgba(200,134,10,0.12); color: #8B5E00; }
+html[data-aero-theme="light"] .gbm-badge--na { background: rgba(0,0,0,0.05); }
+
+.gbm-export-btn {
+  margin-top: 8px;
+  padding: 10px 14px;    /* 44px min touch target */
+  min-height: 44px;
+  background: rgba(57,255,20,0.08);
+  border: 1px solid rgba(57,255,20,0.22);
+  border-radius: 8px;
+  color: #39FF14;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.18s ease, box-shadow 0.18s ease;
+  width: 100%;
+}
+.gbm-export-btn:hover {
+  background: rgba(57,255,20,0.14);
+  box-shadow: 0 0 14px rgba(57,255,20,0.18);
+}
+html[data-aero-theme="light"] .gbm-export-btn {
+  background: rgba(200,134,10,0.08);
+  border-color: rgba(200,134,10,0.26);
+  color: #8B5E00;
+}
+html[data-aero-theme="light"] .gbm-export-btn:hover {
+  background: rgba(200,134,10,0.14);
+  box-shadow: 0 0 14px rgba(200,134,10,0.20);
+}
+
+
+/* ── 26. GENETICS v2 — NEW MODULE STYLES ───────────────── */
+
+/* Offline banner */
+.gbm-offline-banner {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 7px 11px;
+  border-radius: 8px;
+  background: rgba(255,214,0,0.10);
+  border: 1px solid rgba(255,214,0,0.22);
+  color: #FFD600;
+  text-align: center;
+}
+.gbm-hidden { display: none !important; }
+
+/* THI big number display */
+.gbm-thi-big {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 4px 0 6px;
+}
+.gbm-thi-num {
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+.gbm-thi-status {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+.gbm-thi-source {
+  font-size: 11px !important;
+  color: var(--gbm-muted) !important;
+  font-weight: 400 !important;
+}
+
+/* THI gauge bar */
+.gbm-thi-gauge-wrap  { margin: 2px 0 1px; }
+.gbm-thi-gauge-bar   {
+  height: 8px;
+  background: rgba(255,255,255,0.07);
+  border-radius: 99px;
+  overflow: hidden;
+  position: relative;
+}
+.gbm-thi-gauge-fill  {
+  height: 100%;
+  width: var(--thi-w, 0%);
+  background: var(--thi-color, #39FF14);
+  border-radius: 99px;
+  box-shadow: 0 0 10px var(--thi-color, #39FF14);
+  transition: width 1s cubic-bezier(0.22,1,0.36,1);
+}
+.gbm-thi-thresholds {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  font-size: 9px;
+  color: var(--gbm-muted);
+  margin-top: 4px;
+  padding: 0;
+  font-variant-numeric: tabular-nums;
+}
+.gbm-thi-marker {
+  flex-shrink: 0;
+  padding: 0 4px;
+  font-weight: 600;
+  font-size: 9px;
+  color: var(--gbm-muted);
+}
+.gbm-thi-zone {
+  flex: 1;
+  text-align: center;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+/* Pedigree tree */
+.gbm-pedigree-tree   { margin: 4px 0 6px; }
+.gbm-pedigree-row    {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 3px 0;
+  border-bottom: 1px solid rgba(57,255,20,0.05);
+  gap: 8px;
+}
+.gbm-pedigree-row:last-child { border-bottom: none; }
+html[data-aero-theme="light"] .gbm-pedigree-row { border-bottom-color: rgba(180,120,20,0.07); }
+.gbm-pedigree-id {
+  font-size: 11px;
+  font-weight: 600;
+  color: #39FF14;
+  background: rgba(57,255,20,0.08);
+  border: 1px solid rgba(57,255,20,0.14);
+  border-radius: 4px;
+  padding: 1px 5px;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+html[data-aero-theme="light"] .gbm-pedigree-id {
+  color: #8B5E00;
+  background: rgba(200,134,10,0.08);
+  border-color: rgba(200,134,10,0.16);
+}
+
+/* Locked bull row (sexed semen, THI severe) */
+.gbm-bull-row--locked {
+  opacity: 0.42;
+  pointer-events: none;
+  filter: grayscale(0.6);
+}
+
+/* Dry-off ring */
+.gbm-dryoff-ring-wrap {
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+  margin: 4px auto;
+}
+
+/* Inventory sync form */
+.gbm-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-bottom: 5px;
+}
+.gbm-form-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--gbm-label);
+}
+.gbm-select {
+  min-height: 44px;    /* WCAG ergonomic touch target */
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--gbm-border);
+  background: rgba(255,255,255,0.05);
+  color: var(--gbm-text);
+  font-size: 13px;
+  font-family: inherit;
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+.gbm-select:focus {
+  border-color: rgba(57,255,20,0.35);
+  box-shadow: 0 0 0 2px rgba(57,255,20,0.10);
+}
+html[data-aero-theme="light"] .gbm-select {
+  background: rgba(0,0,0,0.04);
+  border-color: rgba(180,120,20,0.18);
+}
+html[data-aero-theme="light"] .gbm-select:focus {
+  border-color: rgba(200,134,10,0.45);
+  box-shadow: 0 0 0 2px rgba(200,134,10,0.10);
+}
+
+/* Action button — 44px touch target */
+.gbm-action-btn {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 16px;
+  border-radius: 10px;
+  background: rgba(57,255,20,0.10);
+  border: 1px solid rgba(57,255,20,0.28);
+  color: #39FF14;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.18s ease, box-shadow 0.18s ease, opacity 0.15s ease;
+  text-align: center;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.gbm-action-btn:active  { opacity: 0.80; transform: scale(0.98); }
+.gbm-action-btn:disabled {
+  opacity: 0.40;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+html[data-aero-theme="light"] .gbm-action-btn {
+  background: rgba(200,134,10,0.10);
+  border-color: rgba(200,134,10,0.30);
+  color: #8B5E00;
+}
+
+/* Inventory status */
+.gbm-inv-status {
+  font-size: 12px;
+  line-height: 1.5;
+  min-height: 0;
+  transition: all 0.2s ease;
+  word-break: break-word;
+}
+
+/* ── 27. SCROLLBAR MAIN CONTENT ─────────────────────────── */
+#root::-webkit-scrollbar { display: none !important; }

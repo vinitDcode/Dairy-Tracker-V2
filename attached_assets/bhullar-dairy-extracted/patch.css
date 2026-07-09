@@ -1,0 +1,197 @@
+/* ════════════════════════════════════════════════════════════════════
+   BHULLAR DAIRY FARM — SCROLL & UI BUG FIX PATCH
+   Loaded LAST (after aero.css) to ensure fixes win the cascade.
+
+   Root causes addressed:
+   ① aero.css ".glass-card{overflow:hidden}" specificity (0,2,0)
+     beats Tailwind ".overflow-y-auto" (0,1,0) → ALL modals broken.
+   ② Sticky header stacking context z-10 < fixed bottom-nav z-50 →
+     profile dropdown renders behind bottom nav.
+   ③ Missing -webkit-overflow-scrolling + overscroll-behavior on
+     bottom sheets → poor iOS scroll / background-scroll bleed.
+   ④ Same overflow:hidden specificity bug blocks overflow-x-auto in
+     tables, genetics tree, analytics charts.
+   ⑤ glass-card overflow clips absolutely-positioned dropdown child.
+════════════════════════════════════════════════════════════════════ */
+
+/* ──────────────────────────────────────────────────────────────────
+   FIX ①  CRITICAL — Restore scroll on ALL glass-card modals/sheets
+   Every modal uses ht = "glass-card relative overflow-hidden rounded-3xl"
+   combined with overflow-y-auto. aero.css wins the specificity war and
+   sets overflow:hidden, making the sheet completely unscrollable.
+   Affected: cow-detail, add/edit cow, health log, semen batch form,
+             lineage form, breeding calendar, analytics drawer.
+────────────────────────────────────────────────────────────────── */
+.glass-card.overflow-y-auto,
+[class~="glass-card"][class~="overflow-y-auto"] {
+  overflow-y: auto !important;
+  /* keep x hidden to preserve glass-card rounded corners */
+  overflow-x: hidden !important;
+}
+
+/* Nested overflow-y-auto elements inside glass-card (e.g. inner tables) */
+.glass-card .overflow-y-auto {
+  overflow-y: auto !important;
+}
+
+/* Restore horizontal scroll for tables / genetics tree inside glass-card */
+.glass-card.overflow-x-auto,
+[class~="glass-card"][class~="overflow-x-auto"],
+.glass-card .overflow-x-auto {
+  overflow-x: auto !important;
+}
+
+/* ──────────────────────────────────────────────────────────────────
+   FIX ②  CRITICAL — Profile dropdown renders under fixed bottom nav
+   The sticky header has Tailwind class z-10 → stacking context z=10.
+   Fixed bottom-nav has z-50 (z=50). Because 50 > 10, the bottom nav
+   paints OVER the header and every child (including the z-[100]
+   profile dropdown). Raising sticky header to z-60 (> 50) fixes this
+   while staying below all dialog/modal layers (z-90+).
+────────────────────────────────────────────────────────────────── */
+.glass-header.sticky,
+header.glass-header,
+[class~="sticky"][class~="glass-header"] {
+  z-index: 60 !important;
+  /* Allow absolutely-positioned profile dropdown to overflow below header */
+  overflow: visible !important;
+}
+
+/* ──────────────────────────────────────────────────────────────────
+   FIX ③  iOS Safari — hardware-accelerated touch scroll everywhere
+   -webkit-overflow-scrolling:touch ensures momentum scrolling works
+   on all iOS devices. overscroll-behavior:contain prevents the body
+   from scrolling when a bottom sheet reaches its boundary.
+────────────────────────────────────────────────────────────────── */
+.overflow-y-auto,
+.overflow-x-auto,
+.overflow-auto {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Contain overscroll within bottom sheets and dialogs */
+[class~="overflow-y-auto"][class~="rounded-b-none"],
+[class~="overflow-y-auto"][class~="max-h-\[92dvh\]"],
+[class~="overflow-y-auto"][class~="max-h-\[94dvh\]"],
+[class~="overflow-y-auto"][class~="max-h-\[90vh\]"],
+[class~="overflow-y-auto"][class~="max-h-\[92vh\]"] {
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ──────────────────────────────────────────────────────────────────
+   FIX ④  Touch-action — ensure vertical scroll in interactive areas
+   Genetics lineage trees and chart areas capture touch events for
+   zoom/drag. Without pan-y on the scroll container, iOS refuses to
+   scroll the sheet while the user is touching these child elements.
+────────────────────────────────────────────────────────────────── */
+.glass-card.overflow-y-auto,
+.overflow-y-auto[class~="max-h-\[92dvh\]"],
+.overflow-y-auto[class~="max-h-\[94dvh\]"],
+.overflow-y-auto[class~="max-h-\[90vh\]"],
+.overflow-y-auto[class~="max-h-\[92vh\]"] {
+  touch-action: pan-y pinch-zoom;
+}
+
+/* ──────────────────────────────────────────────────────────────────
+   FIX ⑤  Genetics lineage tree — horizontal scroll on mobile
+   The genealogy tree (Dam × Sire → Calf nodes) renders wider than a
+   phone screen. Without overflow-x:auto the tree is clipped.
+   Target the wrapper that wraps the tree flex-row.
+────────────────────────────────────────────────────────────────── */
+.glass-card.overflow-y-auto [style*="overflow"],
+.glass-card.overflow-y-auto .overflow-x-auto {
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Ensure the flex lineage row itself can overflow its container */
+.glass-card.overflow-y-auto .flex.items-center.gap-3.w-full,
+.glass-card.overflow-y-auto .flex.items-center.gap-1,
+.glass-card.overflow-y-auto .flex.items-center.justify-center {
+  min-width: min-content;
+}
+
+/* ──────────────────────────────────────────────────────────────────
+   FIX ⑥  Profile dropdown on mobile — expand width & add max-height
+   The profile dropdown is positioned absolute at 268 px wide.
+   On narrow phones this creates an awkward partial-screen look.
+   Widen to use available screen width and add scroll for tall content.
+────────────────────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .w-\[268px\] {
+    width: min(calc(100vw - 24px), 360px) !important;
+    max-height: calc(100svh - 128px) !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+}
+
+/* ──────────────────────────────────────────────────────────────────
+   FIX ⑦  Recharts charts — prevent overflow on small screens
+   Recharts SVGs can overflow their container on narrow viewports.
+   Clamping the wrapper prevents a horizontal page overflow.
+────────────────────────────────────────────────────────────────── */
+.recharts-wrapper,
+.recharts-surface {
+  max-width: 100% !important;
+}
+.recharts-responsive-container {
+  overflow: hidden;
+}
+
+/* ──────────────────────────────────────────────────────────────────
+   FIX ⑧  Dialog/modal backdrop scroll-lock
+   When a full-screen overlay (inset-0) is open, prevent the content
+   behind from scrolling. Uses :has() for modern browsers; gracefully
+   degrades on older ones (the body just remains scrollable behind the
+   dim backdrop, which is acceptable).
+────────────────────────────────────────────────────────────────── */
+@supports selector(:has(*)) {
+  body:has(.fixed.inset-0[class*="z-[90]"]),
+  body:has(.fixed.inset-0[class*="z-[140]"]),
+  body:has(.fixed.inset-0[class*="z-[200]"]),
+  body:has(.fixed.inset-0[class*="z-[300]"]) {
+    overflow: hidden !important;
+  }
+}
+
+/* ──────────────────────────────────────────────────────────────────
+   FIX ⑨  Bottom sheet — dvh unit fallback for older iOS Safari
+   dvh (dynamic viewport height) was added in Safari 15.4. On older
+   devices fall back to svh then vh. Using min() picks the smallest,
+   ensuring the sheet never overflows the screen.
+────────────────────────────────────────────────────────────────── */
+[class~="max-h-\[92dvh\]"] {
+  /* fallback chain: svh → dvh → vh */
+  max-height: 92svh;
+  max-height: 92dvh;
+}
+[class~="max-h-\[94dvh\]"] {
+  max-height: 94svh;
+  max-height: 94dvh;
+}
+
+/* ⑩ REMOVED — #root already applies correct bottom padding for the
+   fixed nav via inline style in index.html. Duplicating it here would
+   cause double padding on all tab content areas. */
+
+/* ──────────────────────────────────────────────────────────────────
+   FIX ⑪  Calendar tab — prevent grid from clipping on mobile
+────────────────────────────────────────────────────────────────── */
+[role="grid"] {
+  width: 100%;
+  table-layout: fixed;
+}
+
+/* ──────────────────────────────────────────────────────────────────
+   FIX ⑫  Table overflow inside glass-card — universal fix
+   Any <table> inside a glass-card that has no explicit overflow-x
+   wrapper will now allow horizontal scroll via its wrapping div.
+────────────────────────────────────────────────────────────────── */
+.glass-card table {
+  min-width: max-content;
+}
+.glass-card .overflow-x-auto > table {
+  min-width: unset;
+}

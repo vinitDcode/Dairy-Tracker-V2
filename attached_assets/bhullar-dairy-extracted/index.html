@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Accessibility fix: removed user-scalable=no and maximum-scale=1.0
+         which prevented low-vision users from pinch-zooming. viewport-fit=cover
+         is kept for iPhone notch / Dynamic Island safe-area support. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="preload" as="style" href="/assets/index-B1BBlUQ6.css" crossorigin>
+    <link rel="modulepreload" href="/assets/index-CrpyjvbJ.js" crossorigin>
+    <title>Bhullar Dairy Farm Dashboard</title>
+    <meta name="description" content="Bhullar Dairy Farm – Command Dashboard for Punjab Operations. Track cattle, milk yield, health alerts, and revenue." />
+    <meta name="robots" content="index, follow" />
+    <!-- Android / PWA -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="theme-color" content="#020B0E" />
+    <!-- iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Bhullar Dairy" />
+    <meta property="og:title" content="Bhullar Dairy Farm Dashboard" />
+    <meta property="og:description" content="Bhullar Dairy Farm Dashboard — Command Dashboard for Punjab Operations." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Bhullar Dairy Farm Dashboard" />
+    <meta name="twitter:description" content="Bhullar Dairy Farm Dashboard — Command Dashboard for Punjab Operations." />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Theme bootstrap: sets data-aero-theme before first paint.
+         Extracted to external file so CSP can use script-src 'self'
+         without requiring 'unsafe-inline'. Render-blocking by design —
+         must run synchronously to prevent theme flash on first paint. -->
+    <script src="/theme-bootstrap.js"></script>
+    <script type="module" crossorigin src="/assets/index-CrpyjvbJ.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-B1BBlUQ6.css">
+    <link rel="stylesheet" href="/aero.css">
+    <link rel="stylesheet" href="/patch.css">
+    <script src="/aero.js" defer></script>
+    <!-- Security & data-safety patches (JSON import guard, date timezone fix).
+         Deferred — only adds event listeners, no render-blocking work. -->
+    <script src="/patch-security.js" defer></script>
+    <style>
+      /* ── Scrollbar: hide visually but KEEP scroll functionality ─────── */
+      *, *::before, *::after {
+        scrollbar-width: none !important;
+        -ms-overflow-style: none !important;
+      }
+      *::-webkit-scrollbar,
+      *::-webkit-scrollbar-thumb,
+      *::-webkit-scrollbar-track,
+      *::-webkit-scrollbar-track-piece,
+      *::-webkit-scrollbar-corner {
+        display: none !important;
+        width: 0 !important;
+        height: 0 !important;
+        background: transparent !important;
+      }
+
+      /* ── Root containment: move scroll into #root, kill doc scrollbar ─ */
+      html, body {
+        overflow: hidden;
+        height: 100%;
+        overscroll-behavior: none;
+      }
+      /* #root becomes the scroll container (fixed elements stay viewport-fixed) */
+      #root {
+        overflow-y: auto;
+        height: 100%;
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: none;
+        /* Bottom clearance for fixed bottom navigation */
+        padding-bottom: calc(70px + env(safe-area-inset-bottom, 0px));
+      }
+
+      /* ── All overflow scroll containers: momentum + smooth ───────────── */
+      [class*="overflow-y-auto"],
+      [class*="overflow-y-scroll"],
+      [class*="overflow-x-auto"] {
+        -webkit-overflow-scrolling: touch;
+        scroll-behavior: smooth;
+        /* Use auto (not contain) so scroll chains up to #root when inner list ends */
+        overscroll-behavior: auto;
+        touch-action: pan-y;
+      }
+      [class*="overflow-x-auto"] {
+        touch-action: pan-x;
+        overscroll-behavior-x: contain;
+      }
+
+      /* ── Buttons / links: no tap flash, no accidental text selection ── */
+      button, a, [role="button"] {
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+        user-select: none;
+        -webkit-user-select: none;
+      }
+
+      /* ── Nav / header: never selectable ────────────────────────────── */
+      nav, header {
+        user-select: none;
+        -webkit-user-select: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>

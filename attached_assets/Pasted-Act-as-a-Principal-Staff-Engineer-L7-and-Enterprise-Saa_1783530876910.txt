@@ -1,0 +1,71 @@
+Act as a Principal Staff Engineer (L7) and Enterprise SaaS Architect for my Supabase-backed React dairy platform. Your objective is a zero-defect overhaul of the 'Genetics' sub-tab inside 'View Cow', completely upgrading the system to a bulletproof multi-tenant SaaS model built to handle global scale with zero cross-tenant data leakage.
+
+PHASE 0: SaaS DB MIGRATION, RLS, & ENTERPRISE INDEXING
+Before touching the frontend, you MUST generate the exact transactional Postgres SQL to migrate the schema securely:
+
+Create Tenants Table: Create a farms table containing id (UUID), name, latitude (FLOAT8), longitude (FLOAT8), timezone (VARCHAR, e.g., 'Asia/Kolkata'), and owner_id (references auth.users).
+
+Idempotent Alterations & Soft Deletes: Add farm_id (UUID foreign key) and deleted_at (TIMESTAMP) columns to cows, semen_inventory, heat_logs, and inseminations. Use IF NOT EXISTS. Implement Soft Deletes so farmers never permanently lose data by accident.
+
+Data Preservation: Safely map all legacy data to a default 'Bhullar Dairy' farm record. Zero data orphaned.
+
+Strict Isolation & Indexing: Apply strict Row Level Security (RLS) filtering against jwt.claims.farm_id. CRUCIAL: You must write SQL to create B-Tree indexes on farm_id across all tables to prevent query bottlenecks at scale.
+
+PHASE 1: PRE-FLIGHT, ARCHITECTURE & SECURITY AUDIT
+
+Parse the upgraded Postgres structure. Do NOT hallucinate schemas.
+
+DOM Constraint: Do not modify absolute/relative positions, flex rules, grid tracks, or layout properties of parent components.
+
+Dynamic Timezone & Secret Protection: NO third-party API keys in client code. Write a Supabase Edge Function to proxy OpenWeatherMap securely. Compute all dates dynamically based on farms.timezone.
+
+Strict TypeScript Enforcement: You must define explicit TypeScript interfaces/types for all Supabase database returns. Absolutely no any types allowed.
+
+PHASE 2: THE 8 SHED-READY SAAS PROFIT MODULES
+
+Dynamic THI & Semen Lockdown: Fetch the farm's coords/timezone from the DB session. Ping the Edge Function for local weather/THI. Cache THI globally and in localStorage for 30 mins to defeat cold starts. If Severe (72+), visually disable sexed semen options and fire a cooling alert.
+
+3-Generation Pedigree Engine: Query a full 3-gen lineage tree. Block bulls where the cow's sire_id or grandsire_id matches the semen's lineage. Write explicit null-safe defensive checks for missing parental IDs.
+
+Hemisphere-Aware Lactation Planner: Compute the 60-90 day peak lactation window from calving_due_date using the farm's timezone. Detect hemisphere (Lat > 0 = May-Aug summer; Lat < 0 = Nov-Feb summer). Throw yield loss warnings if they intersect.
+
+Dry-Off Countdown Engine: Calculate the strict 60-day dry-off period prior to the next calving_due_date. Render an urgent visual flag when a cow enters this window to immediately halt milking and shift nutrition.
+
+Dynamic Heat Cycle Tracker: Fetch the latest verified heat_logs. Project the 21-day estrus window. Build a countdown indicator with a +/- 2 day variance spread.
+
+AM/PM AI Action Alert: AM standing heat = Same-day afternoon AI; PM standing heat = strictly Next-day morning AI. Compute exact date boundaries to prevent calendar rolling errors.
+
+Auto-Deduct Inventory Sync: When an insemination is successfully logged, automatically run an RPC or backend decrement operation to reduce semen_inventory.stock_count for that specific bull by 1. Throw a warning if stock reaches 0.
+
+Tech/Batch Analytics: Compute live conception success metrics per technician and per semen batch. Highlight entities performing below a 40% success floor.
+
+PHASE 3: STATE MEMOIZATION & OFFLINE QUEUEING
+
+Zero-Loop State: Isolate data operations inside custom React hooks (useGeneticsData, useLiveTHI). Apply strict useMemo and useCallback guards to prevent infinite re-renders.
+
+True Offline Queuing & Optimistic UI: If the farmer is in a dead zone, instantly update the UI (optimistic), but push the POST request to a background sync queue (using standard browser APIs or localStorage). When connectivity returns, auto-flush the queue to Supabase.
+
+Data Sanitization: Integrate strict schema validation (Zod) before pushing changes to Supabase.
+
+Error Boundaries: Wrap Genetics in a React Error Boundary. Fallback gracefully if external APIs fail.
+
+PHASE 4: UI/UX, SUNLIGHT VISIBILITY & GLASSMORPHISM
+
+Glassmorphism Spec: Enforce backdrop-filter: blur(12px). Light: off-white with 'Wheat Gold'. Dark: deep slate (rgba(30,30,30,0.5)) with 'Neon Gold'.
+
+Direct Sunlight High-Contrast: Ensure all text/button contrast ratios meet WCAG AAA standards so the dashboard is readable outdoors in glaring midday sun.
+
+Z-Index Stacking: Dropdowns, modals, and alerts MUST render above glassmorphism blurs (e.g., z-50).
+
+Haptic & Ergonomic Layout: Enforce 100dvh globally with overflow-y-auto on wrappers. Strip CSS hover states. Minimum 44x44px touch targets. If supported by the browser, trigger a short navigator.vibrate(50) on successful data saves for physical feedback in the field.
+
+PHASE 5: PRODUCTION HANDOVER & DEPLOYMENT
+I do not accept placeholder blocks or // ... rest of code. Return completely formulated SQL scripts, Supabase Edge Functions, custom hooks, and React components.
+
+Execute the following operations:
+
+Deployment Docs: Provide the exact Supabase CLI commands required to deploy the Edge Function and RPCs.
+
+Live Preview: Initialize the dev server and output a functioning live preview container.
+
+Zip Export: Package the entire workspace into a downloadable .zip file (excluding node_modules and .env) directly in this chat. Do not consider this complete until preview, zip, and CLI commands are provided."

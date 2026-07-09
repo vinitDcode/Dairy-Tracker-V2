@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="preload" as="style" href="/assets/index-B1BBlUQ6.css" crossorigin>
+    <link rel="modulepreload" href="/assets/index-CrpyjvbJ.js" crossorigin>
+    <title>Bhullar Dairy Farm Dashboard</title>
+    <meta name="description" content="Bhullar Dairy Farm – Command Dashboard for Punjab Operations. Track cattle, milk yield, health alerts, and revenue." />
+    <meta name="robots" content="index, follow" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="theme-color" content="#0a0f0a" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Bhullar Dairy" />
+    <meta property="og:title" content="Bhullar Dairy Farm Dashboard" />
+    <meta property="og:description" content="Bhullar Dairy Farm Dashboard — Command Dashboard for Punjab Operations." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Bhullar Dairy Farm Dashboard" />
+    <meta name="twitter:description" content="Bhullar Dairy Farm Dashboard — Command Dashboard for Punjab Operations." />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+    <!-- Global crash guard — loads first so it can catch errors thrown by
+         any script/module that loads after it (see error-resilience.js) -->
+    <script src="/error-resilience.js"></script>
+    <!-- Theme bootstrap: synchronous — sets data-aero-theme before first paint -->
+    <script src="/theme-bootstrap.js"></script>
+    <!-- Supabase credentials (anon/publishable key only) -->
+    <script src="/supabase-config.js"></script>
+    <script type="module" crossorigin src="/assets/index-CrpyjvbJ.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-B1BBlUQ6.css">
+    <link rel="stylesheet" href="/aero.css">
+    <link rel="stylesheet" href="/patch.css">
+    <!-- Genetics intelligence modules — deferred, graceful if Supabase offline -->
+    <script src="/genetics-boost.js" defer></script>
+    <!-- Core interaction enhancer -->
+    <script src="/aero.js" defer></script>
+    <!-- Security & data-safety patches -->
+    <script src="/patch-security.js" defer></script>
+    <style>
+      /* ── Scrollbar: hide visually but KEEP scroll functionality ─────── */
+      *, *::before, *::after {
+        scrollbar-width: none !important;
+        -ms-overflow-style: none !important;
+      }
+      *::-webkit-scrollbar,
+      *::-webkit-scrollbar-thumb,
+      *::-webkit-scrollbar-track,
+      *::-webkit-scrollbar-track-piece,
+      *::-webkit-scrollbar-corner {
+        display: none !important;
+        width: 0 !important;
+        height: 0 !important;
+        background: transparent !important;
+      }
+
+      /* ── Root containment: scroll lives in #root ──────────────────────
+         Keyboard-safe layout: body uses height:100% + min-height:100vh
+         (not 100dvh) so the layout doesn't collapse/jump when a mobile
+         virtual keyboard opens and shrinks the visual viewport. #root is
+         a flex column so any child that wants flex:1 scroll behavior
+         works predictably; overscroll-behavior is "contain" (not "none")
+         so the container still absorbs bounce instead of chaining scroll
+         to a parent that no longer exists on iOS keyboard-open states. */
+      html, body {
+        height: 100%;
+        min-height: 100vh;
+        overflow: hidden; /* horizontal/parent lock only — #root owns vertical scroll */
+      }
+      #root {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        min-height: 100vh;
+        overflow-y: auto;
+        overflow-x: hidden;
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior-y: contain;
+        touch-action: pan-y;
+        padding-bottom: calc(70px + env(safe-area-inset-bottom, 0px));
+      }
+
+      /* ── All scroll containers: momentum + smooth ───────────────────── */
+      [class*="overflow-y-auto"],
+      [class*="overflow-y-scroll"],
+      [class*="overflow-x-auto"] {
+        -webkit-overflow-scrolling: touch;
+        scroll-behavior: smooth;
+        overscroll-behavior: auto;
+        touch-action: pan-y;
+      }
+      [class*="overflow-x-auto"] {
+        touch-action: pan-x;
+        overscroll-behavior-x: contain;
+      }
+
+      /* ── Buttons / links: no tap flash ──────────────────────────────── */
+      button, a, [role="button"] {
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+        user-select: none;
+        -webkit-user-select: none;
+      }
+
+      /* ── Nav / header: never selectable ────────────────────────────── */
+      nav, header {
+        user-select: none;
+        -webkit-user-select: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>

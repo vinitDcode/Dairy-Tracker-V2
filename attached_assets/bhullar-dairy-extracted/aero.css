@@ -1,0 +1,319 @@
+/* ═══════════════════════════════════════════════════════════
+   BHULLAR DAIRY — REFINED GLASS / AERO OVERRIDES  v4
+   Uses html[data-aero-theme="dark|light"] set by aero.js
+   (which bridges React's .dark class on the root div).
+   No :has() selector, no descendant-of-.dark hacks.
+═══════════════════════════════════════════════════════════ */
+
+/* ═════════════════════════════════════════════════════════
+   0. THEME SHORTHAND
+   [data-aero-theme="dark"]  → dark mode
+   [data-aero-theme="light"] → light mode (or no attr yet)
+═══════════════════════════════════════════════════════════ */
+
+/* ── 1. BACKGROUND LOCK ─────────────────────────────────── */
+html[data-aero-theme="dark"], html[data-aero-theme="dark"] body {
+  background-color: #020b0e !important;
+  overscroll-behavior: none;
+}
+html[data-aero-theme="light"], html[data-aero-theme="light"] body {
+  background-color: #ecf2ee !important;
+  overscroll-behavior: none;
+}
+/* Default (before aero.js fires) — assume dark */
+html:not([data-aero-theme]) {
+  background-color: #020b0e !important;
+}
+
+/* Fixed pseudo to cover overscroll bounce zones */
+html::before {
+  content: '';
+  position: fixed;
+  inset: -50vh -50vw;
+  z-index: -9999;
+  pointer-events: none;
+  background: inherit;
+}
+
+/* ── 2. AMBIENT BACKGROUND ──────────────────────────────── */
+html[data-aero-theme="dark"] .aero-bg {
+  background:
+    radial-gradient(ellipse 70% 45% at 12% 8%,  rgba(0,229,255,0.06) 0%, transparent 65%),
+    radial-gradient(ellipse 55% 38% at 88% 82%, rgba(5,223,114,0.05) 0%, transparent 60%),
+    #020b0e !important;
+}
+html[data-aero-theme="light"] .aero-bg {
+  background:
+    radial-gradient(ellipse 70% 45% at 12% 8%,  rgba(0,180,200,0.08) 0%, transparent 65%),
+    radial-gradient(ellipse 55% 38% at 88% 82%, rgba(5,180,100,0.07) 0%, transparent 60%),
+    #ecf2ee !important;
+}
+
+/* Blobs */
+.blob-tl, .blob-br, .blob-mid {
+  animation: blobDrift 24s ease-in-out infinite alternate !important;
+  will-change: transform;
+}
+.blob-br  { animation-delay: -8s  !important; animation-duration: 30s !important; }
+.blob-mid { animation-delay: -15s !important; animation-duration: 36s !important; }
+
+@keyframes blobDrift {
+  0%   { transform: translate(0,    0)    scale(1);    }
+  50%  { transform: translate(3%,  -2%)  scale(1.04); }
+  100% { transform: translate(-2%,  3%)  scale(0.98); }
+}
+
+html[data-aero-theme="dark"] .blob-tl,
+html[data-aero-theme="dark"] .blob-br,
+html[data-aero-theme="dark"] .blob-mid { filter: blur(70px) !important; }
+
+html[data-aero-theme="light"] .blob-tl,
+html[data-aero-theme="light"] .blob-br,
+html[data-aero-theme="light"] .blob-mid { filter: blur(80px) !important; opacity: 0.5; }
+
+/* ── 3. HEADER ──────────────────────────────────────────── */
+html[data-aero-theme="dark"] .glass-header,
+html[data-aero-theme="dark"] header {
+  backdrop-filter: blur(20px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+  background: rgba(2, 11, 14, 0.82) !important;
+  border-bottom: 1px solid rgba(0,229,255,0.10) !important;
+  box-shadow: 0 1px 24px rgba(0,0,0,0.40) !important;
+}
+html[data-aero-theme="light"] .glass-header,
+html[data-aero-theme="light"] header {
+  backdrop-filter: blur(20px) saturate(150%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(150%) !important;
+  background: rgba(240,250,244,0.88) !important;
+  border-bottom: 1px solid rgba(0,120,80,0.10) !important;
+  box-shadow: 0 1px 20px rgba(0,0,0,0.08) !important;
+}
+
+/* ── 4. GLASS CARDS ─────────────────────────────────────── */
+html[data-aero-theme="dark"] .glass-card {
+  backdrop-filter: blur(14px) saturate(150%) !important;
+  -webkit-backdrop-filter: blur(14px) saturate(150%) !important;
+  background: linear-gradient(155deg, rgba(5,30,20,0.58) 0%, rgba(2,15,12,0.52) 100%) !important;
+  border: 1px solid rgba(0,229,255,0.10) !important;
+  box-shadow: 0 1px 0 rgba(255,255,255,0.03) inset, 0 6px 28px rgba(0,0,0,0.38) !important;
+  position: relative; overflow: hidden;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease !important;
+}
+html[data-aero-theme="dark"] .glass-card:hover {
+  border-color: rgba(0,229,255,0.18) !important;
+  box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset, 0 8px 36px rgba(0,0,0,0.44) !important;
+}
+
+html[data-aero-theme="light"] .glass-card {
+  backdrop-filter: blur(14px) saturate(130%) !important;
+  -webkit-backdrop-filter: blur(14px) saturate(130%) !important;
+  background: linear-gradient(155deg, rgba(255,255,255,0.80) 0%, rgba(230,248,240,0.72) 100%) !important;
+  border: 1px solid rgba(0,140,90,0.12) !important;
+  box-shadow: 0 1px 0 rgba(255,255,255,0.90) inset, 0 4px 20px rgba(0,0,0,0.07) !important;
+  position: relative; overflow: hidden;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease !important;
+}
+html[data-aero-theme="light"] .glass-card:hover {
+  border-color: rgba(0,180,120,0.20) !important;
+  box-shadow: 0 1px 0 rgba(255,255,255,0.95) inset, 0 6px 28px rgba(0,0,0,0.10) !important;
+}
+
+/* Gloss hairline */
+.glass-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 1px;
+  pointer-events: none;
+}
+html[data-aero-theme="dark"] .glass-card::before {
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.07) 40%, rgba(255,255,255,0.07) 60%, transparent);
+}
+html[data-aero-theme="light"] .glass-card::before {
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.85) 40%, rgba(255,255,255,0.85) 60%, transparent);
+}
+
+/* ── 5. NAV ─────────────────────────────────────────────── */
+html[data-aero-theme="dark"] nav,
+html[data-aero-theme="dark"] [role="tablist"] {
+  backdrop-filter: blur(16px) saturate(160%) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(160%) !important;
+  background: rgba(2,11,14,0.72) !important;
+}
+html[data-aero-theme="light"] nav,
+html[data-aero-theme="light"] [role="tablist"] {
+  backdrop-filter: blur(16px) saturate(140%) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(140%) !important;
+  background: rgba(235,248,241,0.82) !important;
+}
+
+/* ── 6. BUTTONS ─────────────────────────────────────────── */
+button:not([class*="ghost"]):not([class*="link"]):not([class*="icon"]) {
+  position: relative; overflow: hidden;
+  transition: transform 0.18s cubic-bezier(0.22,1,0.36,1),
+              box-shadow 0.18s ease, filter 0.18s ease !important;
+}
+button:not([class*="ghost"]):not([class*="link"]):not([class*="icon"])::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 50%;
+  background: linear-gradient(180deg, rgba(255,255,255,0.12) 0%, transparent 100%);
+  border-radius: inherit; pointer-events: none;
+}
+button:not([class*="ghost"]):not([class*="link"]):not([class*="icon"]):hover {
+  transform: translateY(-1px) !important;
+  filter: brightness(1.07) !important;
+}
+button:not([class*="ghost"]):not([class*="link"]):not([class*="icon"]):active {
+  transform: translateY(0) scale(0.98) !important;
+  transition-duration: 0.08s !important;
+  filter: brightness(0.96) !important;
+}
+
+/* FAB */
+html[data-aero-theme="dark"] button[class*="fixed"],
+html[data-aero-theme="dark"] button[class*="rounded-full"]:not([class*="ghost"]):not([class*="outline"]) {
+  box-shadow:
+    0 0 0 1px rgba(57,255,20,0.28),
+    0 0 16px rgba(57,255,20,0.20),
+    0 6px 24px rgba(0,0,0,0.45) !important;
+}
+html[data-aero-theme="dark"] button[class*="fixed"]:hover,
+html[data-aero-theme="dark"] button[class*="rounded-full"]:not([class*="ghost"]):not([class*="outline"]):hover {
+  transform: scale(1.06) !important;
+  box-shadow:
+    0 0 0 1px rgba(57,255,20,0.42),
+    0 0 24px rgba(57,255,20,0.30),
+    0 8px 32px rgba(0,0,0,0.55) !important;
+}
+
+/* ── 7. INPUTS ──────────────────────────────────────────── */
+html[data-aero-theme="dark"] input:not([type="checkbox"]):not([type="radio"]),
+html[data-aero-theme="dark"] textarea {
+  background: rgba(0,20,12,0.45) !important;
+  border: 1px solid rgba(0,229,255,0.12) !important;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+}
+html[data-aero-theme="dark"] input:not([type="checkbox"]):not([type="radio"]):focus,
+html[data-aero-theme="dark"] textarea:focus {
+  border-color: rgba(0,229,255,0.32) !important;
+  box-shadow: 0 0 0 2px rgba(0,229,255,0.07) !important;
+  outline: none !important;
+}
+html[data-aero-theme="light"] input:not([type="checkbox"]):not([type="radio"]),
+html[data-aero-theme="light"] textarea {
+  background: rgba(255,255,255,0.65) !important;
+  border: 1px solid rgba(0,120,90,0.15) !important;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+}
+html[data-aero-theme="light"] input:not([type="checkbox"]):not([type="radio"]):focus,
+html[data-aero-theme="light"] textarea:focus {
+  border-color: rgba(0,160,100,0.35) !important;
+  box-shadow: 0 0 0 2px rgba(0,160,100,0.08) !important;
+  outline: none !important;
+}
+
+/* ── 8. MODALS & SHEETS ─────────────────────────────────── */
+html[data-aero-theme="dark"] [role="dialog"] > div,
+html[data-aero-theme="dark"] [class*="dialog-content"],
+html[data-aero-theme="dark"] [class*="sheet-content"] {
+  backdrop-filter: blur(28px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(180%) !important;
+  background: linear-gradient(155deg, rgba(2,24,16,0.92) 0%, rgba(2,11,14,0.94) 100%) !important;
+  border: 1px solid rgba(0,229,255,0.12) !important;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.65) !important;
+  animation: scaleIn 0.25s cubic-bezier(0.22,1,0.36,1) both !important;
+}
+html[data-aero-theme="light"] [role="dialog"] > div,
+html[data-aero-theme="light"] [class*="dialog-content"],
+html[data-aero-theme="light"] [class*="sheet-content"] {
+  backdrop-filter: blur(28px) saturate(150%) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(150%) !important;
+  background: rgba(245,252,248,0.96) !important;
+  border: 1px solid rgba(0,120,90,0.12) !important;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.14) !important;
+  animation: scaleIn 0.25s cubic-bezier(0.22,1,0.36,1) both !important;
+}
+
+/* Overlay */
+html[data-aero-theme="dark"] [class*="overlay"]  { background: rgba(0,4,6,0.72) !important; backdrop-filter: blur(3px) !important; }
+html[data-aero-theme="light"] [class*="overlay"] { background: rgba(0,20,12,0.28) !important; backdrop-filter: blur(3px) !important; }
+
+/* ── 9. DROPDOWNS ───────────────────────────────────────── */
+html[data-aero-theme="dark"] [role="listbox"],
+html[data-aero-theme="dark"] [role="menu"],
+html[data-aero-theme="dark"] [class*="select-content"],
+html[data-aero-theme="dark"] [class*="dropdown-content"] {
+  backdrop-filter: blur(20px) saturate(160%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(160%) !important;
+  background: rgba(2,16,12,0.92) !important;
+  border: 1px solid rgba(0,229,255,0.12) !important;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.55) !important;
+}
+html[data-aero-theme="light"] [role="listbox"],
+html[data-aero-theme="light"] [role="menu"],
+html[data-aero-theme="light"] [class*="select-content"],
+html[data-aero-theme="light"] [class*="dropdown-content"] {
+  backdrop-filter: blur(20px) saturate(140%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(140%) !important;
+  background: rgba(245,252,248,0.97) !important;
+  border: 1px solid rgba(0,120,90,0.12) !important;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.12) !important;
+}
+
+/* ── 10. CHART TOOLTIPS ─────────────────────────────────── */
+html[data-aero-theme="dark"] .recharts-tooltip-wrapper > * {
+  backdrop-filter: blur(14px) !important;
+  background: rgba(2,18,12,0.88) !important;
+  border: 1px solid rgba(0,229,255,0.15) !important;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.45) !important;
+  border-radius: 8px !important;
+}
+html[data-aero-theme="light"] .recharts-tooltip-wrapper > * {
+  backdrop-filter: blur(14px) !important;
+  background: rgba(245,252,248,0.96) !important;
+  border: 1px solid rgba(0,120,90,0.15) !important;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.10) !important;
+  border-radius: 8px !important;
+}
+
+/* ── 11. ENTRANCE ANIMATIONS ────────────────────────────── */
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1);    }
+}
+
+.glass-card { animation: scaleIn 0.30s cubic-bezier(0.22,1,0.36,1) both; }
+
+/* ── 12. DOT GRID ───────────────────────────────────────── */
+html[data-aero-theme="dark"]  .dot-grid { background-image: radial-gradient(rgba(0,229,255,0.05) 1px, transparent 1px) !important; background-size: 26px 26px !important; }
+html[data-aero-theme="light"] .dot-grid { background-image: radial-gradient(rgba(0,120,90,0.06) 1px, transparent 1px) !important; background-size: 26px 26px !important; }
+
+/* ── 13. TABLE ROW HOVER ────────────────────────────────── */
+html[data-aero-theme="dark"]  tr:hover td { background: rgba(0,229,255,0.03) !important; }
+html[data-aero-theme="light"] tr:hover td { background: rgba(0,160,100,0.04) !important; }
+
+/* ── 14. PROGRESS BAR GLOW ──────────────────────────────── */
+[role="progressbar"] > * { box-shadow: 0 0 6px currentColor !important; }
+
+/* ── 15. GLOBAL TRANSITIONS ─────────────────────────────── */
+a, button, [role="button"], [role="tab"],
+input, textarea, select {
+  transition-timing-function: cubic-bezier(0.22,1,0.36,1) !important;
+  transition-duration: 0.18s !important;
+}
+
+/* ── 16. MOBILE SAFE AREA ───────────────────────────────── */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  /* #root is the scroll container — bottom padding already set in index.html via env() */
+  /* Ensure fixed bottom nav clears the home indicator */
+  .glass-header[class*="fixed"][class*="bottom"] {
+    padding-bottom: max(env(safe-area-inset-bottom), 4px);
+  }
+}
+@media (hover: none) {
+  button:hover { transform: none !important; filter: none !important; }
+  .glass-card:hover { box-shadow: inherit !important; border-color: inherit !important; }
+}
+
+/* ── 17. SCROLLBAR HIDDEN ───────────────────────────────── */
+* { scrollbar-width: none !important; -ms-overflow-style: none !important; }
+*::-webkit-scrollbar { display: none !important; }
