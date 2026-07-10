@@ -678,11 +678,18 @@
   }, true);
 
   // Mutation observer: react to new DOM content with genetics keywords
+  // IMPORTANT: ignore mutations that originate from our own injected wrapper
+  // (e.g. the "AI Semen Batch" empty-state text) — otherwise inject() causes
+  // a mutation that re-triggers this observer, which removes+reinserts the
+  // wrapper again, forever. That churn at the top of the panel also kept
+  // resetting scroll position back to the top.
   new MutationObserver(function (muts) {
     for (var i = 0; i < muts.length; i++) {
       for (var j = 0; j < muts[i].addedNodes.length; j++) {
         var n = muts[i].addedNodes[j];
         if (n.nodeType !== 1) continue;
+        if (n.classList && n.classList.contains(WRAPPER_CLS)) continue;
+        if (n.closest && n.closest('.' + WRAPPER_CLS)) continue;
         var txt = n.textContent || '';
         if (PANEL_TEXTS.some(function (p) { return txt.indexOf(p) !== -1; })) {
           setTimeout(function () { pollInject(15); }, 80);
