@@ -56,6 +56,11 @@ Heat cycle math fix:
 
 online/offline listeners attached once at module level via `_listenersAttached` flag — do not attach inside inject() or they accumulate.
 
+## Splash screen is NOT a bug — screenshot timing artifact
+theme-bootstrap.js injects a full-screen branded splash synchronously; aero.js dismisses it once `.aero-bg` appears (or after a hard 1800ms safety timeout no matter what). The Screenshot tool often captures a frame before that timer fires, making the app look permanently stuck on the splash across many repeated screenshots (each is a fresh navigation, not a continued wait).
+**Why:** wasted significant time treating this as a hang/auth-lock bug. Confirmed real behavior by temporarily adding `console.log` to aero.js's setTimeout callback and reading it back via the Screenshot tool's browser-console output — logs showed `aero-bg found=true, splash present=false`, i.e. it dismisses correctly.
+**How to apply:** if the splash appears stuck in a screenshot, don't assume a real bug — add temporary console.log diagnostics to the relevant public/*.js override file and re-screenshot to see actual runtime state before investigating further. `/favicon.ico` 404 in console logs is also harmless noise (no favicon.ico file, only favicon.svg).
+
 ## Critical rules
 - Never set -webkit-text-fill-color on broad text selectors (hides numbers)
 - patch.css must load LAST (wins cascade for scroll fixes)
