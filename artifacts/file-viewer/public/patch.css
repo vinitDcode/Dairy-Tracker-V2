@@ -324,3 +324,62 @@ input[type="radio"]::after, select::after {
 .overflow-y-auto, .overflow-auto, [role="tabpanel"] {
   touch-action: pan-y;
 }
+
+/* ════════════════════════════════════════════════════════════════════
+   PHASE 3 — CROSS-PLATFORM FIXES (iOS / Android / PC)
+
+   ⑯ Sticky/fixed top bars — respect the iPhone notch / Dynamic Island
+      (safe-area-inset-top) and rotate-to-landscape side notches
+      (safe-area-inset-left/right). Bottom nav already had inset-bottom;
+      this closes the gap for the other three edges.
+   ⑰ iOS Safari auto-zooms the whole page when a focused input's
+      computed font-size is under 16px. Every text input in this app
+      uses Tailwind's `text-sm` (14px) — harmless on Android/desktop,
+      but on iOS it causes an unwanted zoom-and-scroll-jump on every
+      field focus. Bump to 16px only at mobile widths so desktop/tablet
+      visual density is unaffected.
+   ⑱ Windows/PC — respect a real hardware mouse: restore normal cursor
+      affordances (`pointer` stays default `auto` for scroll rails,
+      `text` for inputs) that some Tailwind utility resets flatten.
+════════════════════════════════════════════════════════════════════ */
+@supports (padding: env(safe-area-inset-top)) {
+  header.glass-header[class*="sticky"][class*="top-0"],
+  header.glass-header[class*="fixed"][class*="top-0"],
+  .glass-header[class*="sticky"][class*="top-0"],
+  .glass-header[class*="fixed"][class*="top-0"] {
+    padding-top: max(env(safe-area-inset-top), 0px);
+  }
+  body {
+    padding-left: env(safe-area-inset-left, 0px);
+    padding-right: env(safe-area-inset-right, 0px);
+  }
+  .glass-header[class*="fixed"][class*="bottom"] {
+    padding-left: max(env(safe-area-inset-left), 0px);
+    padding-right: max(env(safe-area-inset-right), 0px);
+  }
+}
+
+@media (max-width: 640px) {
+  input, textarea, select {
+    font-size: 16px !important;
+  }
+}
+
+input, textarea {
+  cursor: text;
+}
+
+/* ──────────────────────────────────────────────────────────────────
+   FIX ⑲  Desktop / large monitors — the app has no max-width cap,
+   so on ultra-wide PC screens (>1600px) cards and charts stretch
+   edge-to-edge and become hard to scan. Cap the main scroll column
+   without touching mobile/tablet, where the app already fills the
+   viewport intentionally.
+────────────────────────────────────────────────────────────────── */
+@media (min-width: 1600px) {
+  main {
+    max-width: 1440px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}

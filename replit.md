@@ -38,7 +38,8 @@ _Populate as you build — explicit user instructions worth remembering across s
 
 ## Gotchas
 
-_Populate as you build — sharp edges, "always run X before Y" rules._
+- The splash screen (`#bdf-splash`) always appears in fresh Screenshot-tool captures — it's dismissed by a MutationObserver + 1800ms safety timeout in `aero.js`, but automated screenshots capture right after page load, before that timer fires. This is a screenshot-timing artifact, not an app bug — confirmed working by the user.
+- Cross-platform (iOS/Android/PC) fixes live in `public/patch.css`'s "PHASE 3" section: safe-area insets on all four edges (not just bottom), 16px input font-size on mobile to stop iOS Safari's auto-zoom-on-focus, and a 1440px content cap on ultra-wide desktop monitors.
 
 ## Pointers
 
