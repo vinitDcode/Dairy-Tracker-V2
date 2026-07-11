@@ -383,3 +383,29 @@ input, textarea {
     margin-right: auto;
   }
 }
+
+/* ──────────────────────────────────────────────────────────────────
+   FIX ⑳  Avatar photo "glitch" on tap (Chrome/Android)
+
+   Bug report: tapping the small profile-photo button to open the
+   account dropdown sometimes shows a large, unstyled copy of the
+   photo floating over the whole page until you tap elsewhere.
+
+   Root cause: browsers make every <img> natively draggable by
+   default. A tap on a touchscreen almost always includes a tiny
+   bit of finger movement, which Chrome can interpret as starting a
+   native image drag — it then renders a full-resolution "drag
+   ghost" of that <img> outside the page's normal layout/CSS
+   entirely (hence the unstyled white-bordered look), and it stays
+   on screen until the drag gesture ends.
+
+   Fix: disable the browser's native drag affordance on every image
+   in the app (the profile avatar is the only <img> in the bundle,
+   but this is applied globally as a safe, standard hardening rule).
+────────────────────────────────────────────────────────────────── */
+img {
+  -webkit-user-drag: none;
+  user-drag: none;
+  -webkit-touch-callout: none;
+  touch-action: manipulation;
+}
