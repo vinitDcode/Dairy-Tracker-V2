@@ -1,0 +1,48 @@
+Act as a Principal Staff Engineer (L7), Lead Red-Team Pen Tester, and PWA Architect for my Supabase-backed React dairy platform. Your objective is to brutally audit and bulletproof the entire PWA architecture for true offline-first capability and enterprise-grade security.
+
+PHASE 0: QUOTA-SAFE AUTONOMOUS RED-TEAM QA
+You must act as a malicious attacker trying to break this SaaS and a QA tester validating your own fixes. For every major logic block:
+
+Write the code.
+
+Use your shell skills to run static analysis (e.g., npx eslint src/ or type-checking).
+
+CRITICAL QUOTA RULE: If it throws an error, debug and rewrite. You are strictly limited to a MAXIMUM OF 3 RETRIES. If it fails on the 3rd try, halt execution immediately and output the exact shell error to me for manual review. Do not infinite loop.
+
+Output a brief 'Self-Audit Log' confirming shell verification before proceeding.
+
+PHASE 1: ZERO-TRUST SECURITY LOCKDOWN
+Before touching the UI, audit and patch the following attack vectors:
+
+Secret & Key Leakage: Run a grep search to verify Supabase service_role keys are NEVER exposed in the client. Ensure no third-party API keys are hardcoded in the frontend bundles.
+
+Cross-Tenant Leaks: Verify every Supabase query strictly relies on the authenticated user's session and respects the farm_id RLS policies. Prove a malicious user cannot fetch another farm's data.
+
+Zero-Trust Input: Enforce strict schema validation (e.g., Zod) on every single form input before it touches local state, Supabase, or the offline queue.
+
+Dependency Audit: Run npm audit but DO NOT run npm audit fix or auto-update any packages, as it may break Vite/React.
+
+PHASE 2: ENTERPRISE PWA & SAFE OFFLINE ENGINE
+
+Zombie-Proof Service Worker: Overhaul the Service Worker. Implement aggressive caching for static assets, but you MUST use a Stale-While-Revalidate or Network-First strategy for the main HTML/JS bundles so farmers always receive critical app updates when online.
+
+Workbox Background Sync: Do not write raw IndexedDB boilerplate. Utilize Workbox Background Sync (or idb-keyval) to implement the offline mutation queue. Intercept Supabase POST requests (e.g., health logs, yields) when in rural dead zones, queue them, and auto-flush to Supabase the exact millisecond 4G connectivity is restored.
+
+PWA Manifest: Audit manifest.json. Ensure display: standalone, theme_color, and a full array of touch icons are perfectly configured for a pseudo-native install without browser URL bars.
+
+PHASE 3: GLOBAL UI/UX SHED-PROOFING
+
+Mobile Keyboard Resilience: Enforce height: 100%; min-height: 100dvh; on the root body. Apply padding-bottom: env(safe-area-inset-bottom). Do NOT use overflow: hidden on the root. The main wrapper must be display: flex; flex-direction: column; with the content area flex: 1 1 0%; overflow-y: auto;.
+
+Overscroll & Touch Isolation: Apply overscroll-behavior-y: none to the body to kill the iOS bounce. Apply touch-action: pan-y and -webkit-overflow-scrolling: touch exclusively to inner scrolling flex-containers.
+
+Impenetrable Stacking & Touch: Modals, dropdowns, and toast alerts MUST have explicit z-indexes (e.g., z-50, z-9999) to render cleanly above all glassmorphism filters. Eradicate all CSS :hover states on mobile breakpoints to prevent double-tap bugs. Enforce a minimum 44x44px touch target on all interactive elements.
+
+PHASE 4: FULL HANDOVER & GUARANTEED EXPORT
+I do not accept placeholder code or // ... rest of code. Output complete, production-ready React components, hooks, and Service Workers.
+
+Upon passing your self-regulation loop, execute the following:
+
+Live Preview Verification: Spin up the dev server. Ensure the preview pane reflects the PWA updates without white-screening.
+
+Zip Export: Package the entire workspace into a downloadable .zip file (excluding node_modules and .env). Do not consider this complete until the self-audit is passed, the preview is live, and the zip is provided."
