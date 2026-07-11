@@ -36,3 +36,9 @@ id = "bOfXx-E0BqKsuu4bSUVXb"
 uri = "file://zipFile.zip"
 type = "unspecified"
 title = "Bhullar Dairy — Genetics v2 Full Export"
+
+[[outputs]]
+id = "Yg-mBBdIlrAdYZXipiGGz"
+uri = "file://exports/bhullar-dairy-farm-dashboard.zip"
+type = "unspecified"
+title = "Bhullar Dairy Farm Dashboard — full workspace export"

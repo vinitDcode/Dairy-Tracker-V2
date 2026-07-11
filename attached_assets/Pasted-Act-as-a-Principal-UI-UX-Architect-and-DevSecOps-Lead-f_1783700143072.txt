@@ -1,0 +1,35 @@
+Act as a Principal UI/UX Architect and DevSecOps Lead for my React dashboard. Your objective is a ruthless debugging session to fix global scrollability, achieve cross-platform UI perfection (pseudo-native iOS/Android feel), and run a deep security audit.
+
+PHASE 1: THE SCROLLING & VIEWPORT NUKE (CRITICAL)
+
+Viewport & Keyboard Physics: Completely remove 100vh/100dvh combined with overflow: hidden on the body. It breaks when mobile virtual keyboards open. Use height: 100%; min-height: 100dvh; on the body. Apply padding-bottom: env(safe-area-inset-bottom) to account for device notches and home indicators.
+
+The Flexbox Scroll Fix: The main app wrapper must be display: flex; flex-direction: column;. The scrollable content area MUST have flex: 1 1 0%; overflow-y: auto;.
+
+iOS Safari Anti-BS: Prevent the notorious iOS overscroll bounce on the body (overscroll-behavior: none). Apply -webkit-overflow-scrolling: touch and touch-action: pan-y to all scrollable child containers so scrolling feels native and doesn't snap back to the top.
+
+PHASE 2: AUTONOMOUS DEVSECOPS SAFETY AUDIT
+Use your agent workspace skills to run a deep security audit:
+
+Dependency Audit (NO AUTO-FIX): Run npm audit to scan for vulnerabilities. CRITICAL: Do NOT run npm audit fix or auto-update any packages, as it may break the build. Just flag severe issues.
+
+Supabase Zero-Trust Check: Scan all Supabase API calls. Ensure every fetch respects Row Level Security (RLS) by passing the correct Auth JWT.
+
+Error Boundaries with Retry: Wrap every major tab in a React Error Boundary. The fallback UI must include a functional 'Retry' button so users aren't permanently locked on a crash screen.
+
+PHASE 3: CROSS-PLATFORM ERGONOMICS & PWA
+
+Touch Ergonomics: Eradicate all CSS :hover states on mobile breakpoints (they cause 'double-tap' bugs on touchscreens). Enforce a strict minimum 44x44px touch target for every single button, link, and dropdown.
+
+Z-Index & Contrast: Ensure fixed elements (headers, modals) have explicit z-indexes (z-50) so they don't block scroll events. Ensure the glassmorphism theme text meets WCAG AAA contrast for legibility in direct sunlight.
+
+PWA Readiness: Configure the layout to support a standalone display mode so it behaves exactly like a native app without browser URL bars cluttering the screen.
+
+PHASE 4: FULL HANDOVER, PREVIEW & ZIP EXPORT
+I do not accept placeholder code or // ... rest of code. Output complete, production-ready React layout fixes.
+
+Upon completion:
+
+Live Preview Verification: Initialize the dev server and output a working live preview directly in the UI. Prove the scrolling works on tall components.
+
+Zip Export: Automatically generate and provide a working, downloadable .zip file of the entire updated workspace (excluding node_modules and .env secrets) directly in this chat or workspace UI. Do not consider this complete until both preview and zip are provided."

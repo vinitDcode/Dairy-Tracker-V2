@@ -8,7 +8,7 @@
    - Bumped cache name to bhullar-v8 (clears v7 cache).
 ═══════════════════════════════════════════════════════════ */
 
-var CACHE = 'bhullar-v14';
+var CACHE = 'bhullar-v15';
 
 /* Only cache content-hashed bundles and static icons.
    All override/patch/intelligence files are network-only. */

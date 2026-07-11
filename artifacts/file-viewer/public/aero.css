@@ -703,8 +703,32 @@ html[data-aero-theme="light"] :focus-visible {
   }
 }
 @media (hover: none) {
+  /* Touchscreens: neutralize EVERY :hover style so a tap can't get
+     "stuck" showing a hover state until a second tap lands elsewhere
+     (the classic mobile double-tap bug). Broadened from the previous
+     button/.glass-card-only rule after a security/UX audit found
+     tr:hover, [role="option"]:hover, [role="menuitem"]:hover, and
+     .gbm-export-btn:hover still active on touch devices. */
   button:hover { transform: none !important; filter: none !important; }
   .glass-card:hover { box-shadow: inherit !important; border-color: inherit !important; }
+  html[data-aero-theme="dark"] .glass-card:hover,
+  html[data-aero-theme="light"] .glass-card:hover,
+  html[data-aero-theme="dark"] button[class*="bg-"]:not([class*="ghost"]):not([class*="outline"]):hover,
+  html[data-aero-theme="light"] button[class*="bg-"]:not([class*="ghost"]):not([class*="outline"]):hover,
+  html[data-aero-theme="dark"] button[class*="fixed"]:hover,
+  html[data-aero-theme="dark"] button[class*="rounded-full"]:not([class*="ghost"]):not([class*="outline"]):hover,
+  html[data-aero-theme="light"] button[class*="fixed"]:hover,
+  html[data-aero-theme="light"] button[class*="rounded-full"]:not([class*="ghost"]):not([class*="outline"]):hover,
+  html[data-aero-theme="dark"] [role="option"]:hover,
+  html[data-aero-theme="dark"] [role="menuitem"]:hover,
+  html[data-aero-theme="light"] [role="option"]:hover,
+  html[data-aero-theme="light"] [role="menuitem"]:hover,
+  html[data-aero-theme="dark"] tr:hover td,
+  html[data-aero-theme="light"] tr:hover td,
+  .gbm-export-btn:hover,
+  html[data-aero-theme="light"] .gbm-export-btn:hover {
+    all: revert !important;
+  }
 }
 
 
