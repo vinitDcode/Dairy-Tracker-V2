@@ -1,0 +1,103 @@
+# ════════════════════════════════════════════════════════════════════
+# Netlify deploy config for Bhullar Dairy Farm Dashboard
+#
+# This repo is a pnpm monorepo, but the dashboard itself is a
+# pre-built, static React bundle — no build step is required to
+# deploy it. Everything Netlify needs to serve is already compiled
+# into `netlify-deploy/` (kept in sync with
+# `artifacts/file-viewer/public/` + `artifacts/file-viewer/index.html`).
+#
+# Netlify setup (UI or this file — this file is enough on its own):
+#   Base directory:    netlify-deploy
+#   Build command:     (leave empty)
+#   Publish directory: netlify-deploy   (or "." if base dir is set)
+#
+# If you change theme/patch files in artifacts/file-viewer/public/,
+# re-sync netlify-deploy/ before pushing (see netlify-deploy/README.md).
+# ════════════════════════════════════════════════════════════════════
+
+[build]
+  base = "netlify-deploy"
+  publish = "."
+  command = ""
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+    # Content-Security-Policy — inline <style> is allowed (styles can't
+    # exfiltrate tokens), but scripts must come from 'self' only.
+    # Supabase REST + realtime WebSocket are the only external connect-src.
+    # Google Fonts for the DM Sans typeface.
+    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://gmywodybfbcztnbrfnnr.supabase.co wss://gmywodybfbcztnbrfnnr.supabase.co https://fonts.googleapis.com; img-src 'self' data: blob: https://*.googleusercontent.com https://lh3.googleusercontent.com; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self';"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/icons/*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
+
+[[headers]]
+  for = "/favicon.svg"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
+
+[[headers]]
+  for = "/manifest.json"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"
+
+# Enhancement / patch / service-worker files — served no-cache so fixes
+# roll out immediately on the next deploy instead of being stuck behind
+# a stale browser or CDN cache.
+[[headers]]
+  for = "/sw.js"
+  [headers.values]
+    Cache-Control = "no-cache"
+
+[[headers]]
+  for = "/aero.js"
+  [headers.values]
+    Cache-Control = "no-cache"
+
+[[headers]]
+  for = "/aero.css"
+  [headers.values]
+    Cache-Control = "no-cache"
+
+[[headers]]
+  for = "/patch.css"
+  [headers.values]
+    Cache-Control = "no-cache"
+
+[[headers]]
+  for = "/patch-security.js"
+  [headers.values]
+    Cache-Control = "no-cache"
+
+[[headers]]
+  for = "/theme-bootstrap.js"
+  [headers.values]
+    Cache-Control = "no-cache"
+
+[[headers]]
+  for = "/offline-queue-ui.js"
+  [headers.values]
+    Cache-Control = "no-cache"
+
+[[headers]]
+  for = "/genetics-boost.js"
+  [headers.values]
+    Cache-Control = "no-cache"
