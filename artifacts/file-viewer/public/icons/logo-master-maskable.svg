@@ -21,23 +21,22 @@
     </linearGradient>
   </defs>
 
-  <!-- App-icon background: rounded square matching the dashboard's dark theme -->
-  <rect width="512" height="512" rx="108" fill="url(#bg)"/>
-  <rect width="512" height="512" rx="108" fill="url(#glow)"/>
+  <!-- Full-bleed background: OS applies its own mask shape (circle/squircle)
+       on top of this, so the background must extend to the edges. -->
+  <rect width="512" height="512" fill="url(#bg)"/>
+  <rect width="512" height="512" fill="url(#glow)"/>
 
-  <!-- Milk drop — same silhouette as the in-app header logo, enlarged and
-       bolder so it stays legible down to favicon size -->
-  <path
-    d="M256 90C256 90 148 224 148 302C148 371.03 195.965 428 256 428C316.035 428 364 371.03 364 302C364 224 256 90 256 90Z"
-    fill="url(#drop)"
-    stroke="url(#dropStroke)"
-    stroke-width="10"
-    stroke-linejoin="round"
-  />
-
-  <!-- Inner shine highlight -->
-  <ellipse cx="208" cy="248" rx="26" ry="38" fill="#F3FFF7" fill-opacity="0.82" transform="rotate(-18 208 248)"/>
-
-  <!-- Secondary cyan glint along the right edge, echoing the header logo -->
-  <path d="M312 210 Q346 270 320 340" stroke="#00E5FF" stroke-opacity="0.55" stroke-width="10" stroke-linecap="round" fill="none"/>
+  <!-- Glyph scaled down ~72% and centered so it stays inside the platform's
+       safe zone regardless of mask shape -->
+  <g transform="translate(256,259) scale(0.72) translate(-256,-259)">
+    <path
+      d="M256 90C256 90 148 224 148 302C148 371.03 195.965 428 256 428C316.035 428 364 371.03 364 302C364 224 256 90 256 90Z"
+      fill="url(#drop)"
+      stroke="url(#dropStroke)"
+      stroke-width="10"
+      stroke-linejoin="round"
+    />
+    <ellipse cx="208" cy="248" rx="26" ry="38" fill="#F3FFF7" fill-opacity="0.82" transform="rotate(-18 208 248)"/>
+    <path d="M312 210 Q346 270 320 340" stroke="#00E5FF" stroke-opacity="0.55" stroke-width="10" stroke-linecap="round" fill="none"/>
+  </g>
 </svg>

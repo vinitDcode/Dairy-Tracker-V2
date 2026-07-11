@@ -20,7 +20,7 @@
 
 'use strict';
 
-var CACHE_VERSION  = 'bhullar-v16';
+var CACHE_VERSION  = 'bhullar-v17';
 var QUEUE_DB_NAME  = 'bdf-sync-queue';
 var QUEUE_STORE    = 'mutations';
 var QUEUE_DB_VER   = 1;
@@ -38,6 +38,8 @@ var CACHE_FIRST = [
   '/icons/icon-192x192.png',
   '/icons/icon-384x384.png',
   '/icons/icon-512x512.png',
+  '/icons/icon-512x512-maskable.png',
+  '/icons/apple-touch-icon.png',
 ];
 
 /* ── PATCH/OVERRIDE FILES: Stale-While-Revalidate ─────────────────── */
