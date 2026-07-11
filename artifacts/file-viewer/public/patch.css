@@ -385,7 +385,42 @@ input, textarea {
 }
 
 /* ──────────────────────────────────────────────────────────────────
-   FIX ⑳  Avatar photo "glitch" on tap (Chrome/Android)
+   FIX ⑳  Account dropdown "glitch"/double-render on open (all platforms)
+
+   Root cause found: aero.css's themed rule
+   `html[data-aero-theme="dark"/"light"] .glass-card` sets
+   `position: relative; overflow: hidden;` on every element that uses
+   the shared `.glass-card` class. The account dropdown panel reuses
+   `.glass-card` for its glass background AND needs Tailwind's
+   `absolute` utility to float below the avatar button — but the
+   themed selector (`html[data-aero-theme] .glass-card`) has higher
+   specificity than a bare `.absolute` class, so it silently forces
+   the panel back to `position: relative`.
+
+   With `position: relative` instead of `absolute`, the panel no
+   longer escapes normal document flow the way it was designed to:
+   it still gets shifted by its `top`/`right` offsets (so it still
+   *looks* like a floating panel at first paint) while ALSO reserving
+   its layout footprint in the flow and running a transform-based
+   entrance animation (`scaleIn`) that was authored assuming absolute
+   positioning. That mismatch between the animated/composited box and
+   its reflowed layout box is what produces the doubled, offset
+   "ghost" copy of the panel seen in the bug report (reproduced on
+   both Android Chrome and desktop — confirming it's a CSS cascade
+   bug, not a touch/mobile-only issue).
+
+   Fix: force `position: absolute` back on any element that declares
+   both `glass-card` and `absolute` in its class list. `!important`
+   is required because the conflicting aero.css rule wins on
+   specificity alone (attribute-selector theme scoping beats a bare
+   utility class) even though patch.css loads after it.
+────────────────────────────────────────────────────────────────── */
+[class*="glass-card"][class*="absolute"] {
+  position: absolute !important;
+}
+
+/* ──────────────────────────────────────────────────────────────────
+   FIX ㉑  Avatar photo "glitch" on tap (Chrome/Android)
 
    Bug report: tapping the small profile-photo button to open the
    account dropdown sometimes shows a large, unstyled copy of the
