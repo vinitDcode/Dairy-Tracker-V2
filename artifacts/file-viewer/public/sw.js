@@ -20,7 +20,7 @@
 
 'use strict';
 
-var CACHE_VERSION  = 'bhullar-v17';
+var CACHE_VERSION  = 'bhullar-v18';
 var QUEUE_DB_NAME  = 'bdf-sync-queue';
 var QUEUE_STORE    = 'mutations';
 var QUEUE_DB_VER   = 1;
@@ -59,10 +59,21 @@ var STALE_WHILE_REVALIDATE = [
 ];
 
 /* ── PREWARM CACHE ─────────────────────────────────────────────────── */
+/* IMPORTANT: cache.addAll() is all-or-nothing — if a single listed file
+   404s or times out, the WHOLE install rejects, the SW never activates,
+   and every client keeps running whatever (possibly stale/broken) SW it
+   already had — this is how a bad deploy can silently "never take" on
+   a phone. Warm each URL independently instead, so one bad entry can't
+   sink the rest, and always resolve so skipWaiting() still runs. */
 self.addEventListener('install', function (e) {
   e.waitUntil(
     caches.open(CACHE_VERSION).then(function (cache) {
-      return cache.addAll(CACHE_FIRST.concat(['/', '/manifest.json']));
+      var urls = CACHE_FIRST.concat(['/', '/manifest.json']);
+      return Promise.all(urls.map(function (url) {
+        return cache.add(url).catch(function (err) {
+          console.warn('[SW] Prewarm skip (non-fatal):', url, err);
+        });
+      }));
     }).then(function () {
       return self.skipWaiting();
     })
