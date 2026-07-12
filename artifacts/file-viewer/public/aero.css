@@ -194,11 +194,22 @@ html[data-aero-theme="dark"] .glass-card {
     0 4px 20px rgba(0,0,0,0.50),
     0 1px 3px rgba(0,0,0,0.32) !important;
   border-radius: 16px !important;
-  position: relative; overflow: hidden;
   transition:
     border-color 0.25s ease-out,
     box-shadow 0.25s ease-out,
     transform 0.20s cubic-bezier(0.22,1,0.36,1) !important;
+}
+/* Only force a positioning context on cards that don't already declare
+   their own (Tailwind `absolute`/`fixed`) — dropdowns, popovers, and
+   floating menus reuse .glass-card for styling but need to control
+   their own position/overflow. Forcing `overflow: hidden` here used to
+   clip any dropdown/menu/tooltip rendered inside a card, and forcing
+   `position: relative` broke any card that needed `absolute`/`fixed`
+   (e.g. the account menu, filter dropdowns inside cow cards). See
+   patch.css FIX ⑳ for the incident this was found from. */
+html[data-aero-theme="dark"] .glass-card:not([class*="absolute"]):not([class*="fixed"]) {
+  position: relative;
+  overflow: hidden;
 }
 html[data-aero-theme="dark"] .glass-card:hover {
   border-color: rgba(57, 255, 20, 0.18) !important;
@@ -224,11 +235,14 @@ html[data-aero-theme="light"] .glass-card {
     0 3px 16px rgba(100, 60, 10, 0.09),
     0 1px 3px rgba(100, 60, 10, 0.06) !important;
   border-radius: 16px !important;
-  position: relative; overflow: hidden;
   transition:
     border-color 0.25s ease-out,
     box-shadow 0.25s ease-out,
     transform 0.20s cubic-bezier(0.22,1,0.36,1) !important;
+}
+html[data-aero-theme="light"] .glass-card:not([class*="absolute"]):not([class*="fixed"]) {
+  position: relative;
+  overflow: hidden;
 }
 html[data-aero-theme="light"] .glass-card:hover {
   border-color: rgba(200, 134, 10, 0.28) !important;

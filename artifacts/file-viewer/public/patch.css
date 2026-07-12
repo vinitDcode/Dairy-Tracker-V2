@@ -409,11 +409,18 @@ input, textarea {
    both Android Chrome and desktop — confirming it's a CSS cascade
    bug, not a touch/mobile-only issue).
 
-   Fix: force `position: absolute` back on any element that declares
-   both `glass-card` and `absolute` in its class list. `!important`
-   is required because the conflicting aero.css rule wins on
-   specificity alone (attribute-selector theme scoping beats a bare
-   utility class) even though patch.css loads after it.
+   UPDATE: the real fix now lives at the source, in aero.css. The
+   `.glass-card` theme rule there was unconditionally forcing
+   `position: relative; overflow: hidden` on EVERY card that uses the
+   shared `.glass-card` class — not just the account dropdown. That
+   `overflow: hidden` also clipped any dropdown/select/filter menu/
+   tooltip rendered *inside* a card (affecting many other tabs,
+   including "View Cow"), and the forced `position: relative` broke
+   any card that needed `absolute`/`fixed` positioning itself. aero.css
+   now only forces position/overflow on cards that don't already
+   declare `absolute`/`fixed` themselves. This rule stays as a second
+   line of defense in case any card/menu combination still slips
+   through with a conflicting class string.
 ────────────────────────────────────────────────────────────────── */
 [class*="glass-card"][class*="absolute"] {
   position: absolute !important;
